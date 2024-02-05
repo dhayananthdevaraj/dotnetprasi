@@ -9,7 +9,6 @@ namespace dotnetapp.Controllers
     public class ReviewController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-
         public ReviewController(ApplicationDbContext context)
         {
             _context = context;

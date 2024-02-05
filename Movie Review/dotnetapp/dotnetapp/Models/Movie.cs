@@ -7,7 +7,6 @@
         public string Description { get; set; }
         public DateTime ReleaseDate { get; set; }
         public string Genre { get; set; }
-
         public List<Review>?Reviews { get; set; }
     }
 }

@@ -4,15 +4,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DotNetApp.Models; // Assuming your models are in the DotNetApp.Models namespace
+using dotnetapp.Models; // Assuming your models are in the DotNetApp.Models namespace
 
 [Route("api/[controller]")]
 [ApiController]
 public class JobsController : ControllerBase
 {
-    private readonly YourDbContext _context; // Replace YourDbContext with your actual DbContext class
+    private readonly ApplicationDbContext _context; // Replace YourDbContext with your actual DbContext class
 
-    public JobsController(YourDbContext context)
+    public JobsController(ApplicationDbContext context)
     {
         _context = context;
     }

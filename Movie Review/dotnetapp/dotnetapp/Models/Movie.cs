@@ -8,6 +8,6 @@
         public DateTime ReleaseDate { get; set; }
         public string Genre { get; set; }
 
-        public List<Review>? Reviews { get; set; }
+        public List<Review>?Reviews { get; set; }
     }
 }

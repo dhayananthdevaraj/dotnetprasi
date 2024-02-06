@@ -23,15 +23,15 @@ public class JobsController : ControllerBase
         var searchRegex = new System.Text.RegularExpressions.Regex(searchValue, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
         var jobs = await _context.Jobs
-            .Where(job => searchRegex.IsMatch(job.Title))
-            .OrderBy(job => job.StartDate)
+            // .Where(job => searchRegex.IsMatch(job.Title))
+            // .OrderBy(job => job.StartDate)
             .ToListAsync();
 
         return Ok(jobs);
     }
 
     [HttpGet("{jobId}")]
-    public async Task<ActionResult<Job>> GetJobById(string jobId)
+    public async Task<ActionResult<Job>> GetJobById(int jobId)
     {
         var job = await _context.Jobs
             .FirstOrDefaultAsync(job => job.JobId == jobId);
@@ -61,7 +61,7 @@ public class JobsController : ControllerBase
     }
 
     [HttpPut("{jobId}")]
-    public async Task<ActionResult> UpdateJob(string jobId, [FromBody] Job job)
+    public async Task<ActionResult> UpdateJob(int jobId, [FromBody] Job job)
     {
         try
         {
@@ -84,7 +84,7 @@ public class JobsController : ControllerBase
     }
 
     [HttpDelete("{jobId}")]
-    public async Task<ActionResult> DeleteJob(string jobId)
+    public async Task<ActionResult> DeleteJob(int jobId)
     {
         try
         {
@@ -107,7 +107,7 @@ public class JobsController : ControllerBase
     }
 
     [HttpGet("user/{userId}")]
-    public async Task<ActionResult<IEnumerable<Job>>> GetJobsByUserId(string userId, [FromQuery] string searchValue = "")
+    public async Task<ActionResult<IEnumerable<Job>>> GetJobsByUserId(int userId, [FromQuery] string searchValue = "")
     {
         var searchRegex = new System.Text.RegularExpressions.Regex(searchValue, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 

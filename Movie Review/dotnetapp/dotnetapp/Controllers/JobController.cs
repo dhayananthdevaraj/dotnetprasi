@@ -28,29 +28,25 @@ public class JobsController : ControllerBase
         //     .ToListAsync();
 
         // return Ok(jobs);
-        //     var jobs = await _context.Jobs
-        //     .ToListAsync(); // Retrieve all jobs from the database
+        var jobs = await _context.Jobs
+        .ToListAsync(); // Retrieve all jobs from the database
 
-        // var searchRegex = new System.Text.RegularExpressions.Regex(searchValue, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
-
-        // jobs = jobs
-        //     .Where(job => searchRegex.IsMatch(job.Title)) // Filter on the client-side
-        //     .OrderBy(job => job.StartDate) // Sort based on StartDate and sortValue
-        //     .ToList(); // Convert back to List
-
-        // return Ok(jobs);
         var searchRegex = new System.Text.RegularExpressions.Regex(searchValue, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
-        var jobsQuery = _context.Jobs
-            .Where(job => searchRegex.IsMatch(job.Title)); // Apply the search filter
+        jobs = jobs
+            .Where(job => searchRegex.IsMatch(job.Title)) // Filter on the client-side
+                                                          // .OrderBy(job => job.StartDate) // Sort based on StartDate and sortValue
+            .ToList(); // Convert back to List
+        if (sortValue == -1)
+        {
+            jobs = jobs.OrderByDescending(job => job.StartDate).ToList(); // Sort in descending order
+        }
+        else
+        {
+            jobs = jobs.OrderBy(job => job.StartDate).ToList(); // Sort in ascending order (default)
+        }
 
-        jobsQuery = sortValue == 1
-            ? jobsQuery.OrderBy(job => job.StartDate)
-            : jobsQuery.OrderByDescending(job => job.StartDate); // Dynamically adjust the sorting based on sortValue
-
-        var jobs = await jobsQuery.ToListAsync();
         return Ok(jobs);
-
     }
 
     [HttpGet("{jobId}")]
@@ -94,6 +90,8 @@ public class JobsController : ControllerBase
             {
                 return NotFound(new { message = "Cannot find any job" });
             }
+            job.JobId = jobId;
+
 
             _context.Entry(existingJob).CurrentValues.SetValues(job);
             await _context.SaveChangesAsync();
@@ -138,6 +136,10 @@ public class JobsController : ControllerBase
             // .Where(job => job.UserId == userId && searchRegex.IsMatch(job.Title))
             .ToListAsync();
 
+        jobs = jobs
+                  .Where(job => searchRegex.IsMatch(job.Title)) // Filter on the client-side
+                                                                // .OrderBy(job => job.StartDate) // Sort based on StartDate and sortValue
+                  .ToList();
         return Ok(jobs);
     }
 }

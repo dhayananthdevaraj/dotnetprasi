@@ -128,18 +128,27 @@ public class JobsController : ControllerBase
     }
 
     [HttpGet("user/{userId}")]
-    public async Task<ActionResult<IEnumerable<Job>>> GetJobsByUserId(int userId, [FromQuery] string searchValue = "")
+    public async Task<ActionResult<IEnumerable<Job>>> GetJobsByUserId(int userId, [FromQuery] string searchValue = null)
     {
-        var searchRegex = new System.Text.RegularExpressions.Regex(searchValue, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+        // var searchRegex = new System.Text.RegularExpressions.Regex(searchValue, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
         var jobs = await _context.Jobs
             // .Where(job => job.UserId == userId && searchRegex.IsMatch(job.Title))
             .ToListAsync();
 
         jobs = jobs
-                  .Where(job => searchRegex.IsMatch(job.Title)) // Filter on the client-side
-                                                                // .OrderBy(job => job.StartDate) // Sort based on StartDate and sortValue
-                  .ToList();
+            .Where(job => job.UserId == userId)
+                // .OrderBy(job => job.StartDate) // Sort based on StartDate and sortValue
+                .ToList();
+
+        if (!string.IsNullOrEmpty(searchValue))
+        {
+            var searchRegex = new System.Text.RegularExpressions.Regex(searchValue, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+            jobs = jobs.Where(job => searchRegex.IsMatch(job.Title)).ToList();
+        }
+
+
         return Ok(jobs);
     }
 }

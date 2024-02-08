@@ -125,7 +125,7 @@ public class JobsController : ControllerBase
     {
 
         // var searchRegex = new System.Text.RegularExpressions.Regex(searchValue, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
-
+Console.WriteLine("searchValue"+searchValue);
         var jobs = await _context.Jobs
             // .Where(job => job.UserId == userId && searchRegex.IsMatch(job.Title))
             .ToListAsync();

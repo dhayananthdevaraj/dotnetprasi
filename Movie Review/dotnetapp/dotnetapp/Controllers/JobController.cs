@@ -121,7 +121,7 @@ public class JobsController : ControllerBase
     }
 
     [HttpGet("user/{userId}")]
-    public async Task<ActionResult<IEnumerable<Job>>> GetJobsByUserId(int userId, [FromQuery] string searchValue = null)
+    public async Task<ActionResult<IEnumerable<Job>>> GetJobsByUserId(int userId, [FromQuery] string? searchValue = null)
     {
 
         // var searchRegex = new System.Text.RegularExpressions.Regex(searchValue, System.Text.RegularExpressions.RegexOptions.IgnoreCase);

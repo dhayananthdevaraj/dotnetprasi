@@ -18,7 +18,7 @@ public class JobsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Job>>> GetAllJobs([FromQuery] int sortValue = 1, [FromQuery] string searchValue = "")
+    public async Task<ActionResult<IEnumerable<Job>>> GetAllJobs([FromQuery] int? sortValue = 1, [FromQuery] string?` searchValue = "")
     {
     
         var jobs = await _context.Jobs

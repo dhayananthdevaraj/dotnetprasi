@@ -20,14 +20,7 @@ public class JobsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Job>>> GetAllJobs([FromQuery] int sortValue = 1, [FromQuery] string searchValue = "")
     {
-        // var searchRegex = new System.Text.RegularExpressions.Regex(searchValue, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
-
-        // var jobs = await _context.Jobs
-        //     .Where(job => searchRegex.IsMatch(job.Title))
-        //     // .OrderBy(job => job.StartDate)
-        //     .ToListAsync();
-
-        // return Ok(jobs);
+    
         var jobs = await _context.Jobs
         .ToListAsync(); // Retrieve all jobs from the database
 

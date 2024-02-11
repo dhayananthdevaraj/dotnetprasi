@@ -4,11 +4,17 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using dotnetapp.Models;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.IdentityModel.Tokens; // Add this using directive
 
 [Route("auth/api/[controller]")]
 [ApiController]
 public class AuthController : ControllerBase
-{
+{   
+     private const string HardcodedJwtSecretKey = "your_hardcoded_secret_key"; // Replace with your actual secret key
+
     private readonly ApplicationDbContext _context;
 
     public AuthController(ApplicationDbContext context)
@@ -74,6 +80,18 @@ public class AuthController : ControllerBase
     {
         try
         {
+            var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+
+        if (userIdClaim == null)
+        {
+            return Unauthorized(new { message = "Invalid or missing token" });
+        }
+
+        // Validate the user ID from the token
+        if (!int.TryParse(userIdClaim.Value, out int userId))
+        {
+            return Unauthorized(new { message = "Invalid user ID in the token" });
+        }
             var users = await _context.Users.Select(u => new { u.FirstName, u.LastName, u.Role, u.UserId }).ToListAsync();
             return Ok(users);
         }
@@ -85,11 +103,23 @@ public class AuthController : ControllerBase
 
     private string GenerateToken(int userId)
     {
-        // Implement your token generation logic here
-        // You may use a library like JWT for token generation
-        // Example: var token = JwtUtility.GenerateToken(userId);
-        // Make sure to include the necessary NuGet packages for JWT handling
-        return "your_generated_token";
+       
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(HardcodedJwtSecretKey));
+        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+        var claims = new[]
+        {
+            new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+            // Add additional claims if needed
+        };
+
+        var token = new JwtSecurityToken(
+            claims: claims,
+            expires: DateTime.UtcNow.AddHours(2), // Token expiry time
+            signingCredentials: credentials
+        );
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 }
 public class LoginRequestModel

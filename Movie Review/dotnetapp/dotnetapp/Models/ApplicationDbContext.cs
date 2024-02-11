@@ -12,4 +12,4 @@ namespace dotnetapp.Models
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Review> Reviews { get; set; }
     }
-}
+}`

@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using dotnetapp.Models;
 
@@ -35,7 +37,7 @@ public class AuthController : ControllerBase
                 return Unauthorized(new { message = "Invalid Credentials" });
             }
 
-            var token = GenerateToken(user.UserId);
+            var token = GenerateToken(user.username);
 
             var responseObj = new
             {
@@ -83,13 +85,24 @@ public class AuthController : ControllerBase
         }
     }
 
-    private string GenerateToken(int userId)
+     private string GenerateToken(string username)
     {
-        // Implement your token generation logic here
-        // You may use a library like JWT for token generation
-        // Example: var token = JwtUtility.GenerateToken(userId);
-        // Make sure to include the necessary NuGet packages for JWT handling
-        return "your_generated_token";
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtSecretKey));
+        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+        var claims = new[]
+        {
+            new Claim(ClaimTypes.Name, username),
+            // Add additional claims if needed
+        };
+
+        var token = new JwtSecurityToken(
+            claims: claims,
+            expires: DateTime.UtcNow.AddHours(2), // Token expiry time
+            signingCredentials: credentials
+        );
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 }
 public class LoginRequestModel

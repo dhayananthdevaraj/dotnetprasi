@@ -17,6 +17,8 @@ public class AuthController : ControllerBase
 
     private readonly ApplicationDbContext _context;
 
+    private readonly AuthService _authService;
+
     public AuthController(ApplicationDbContext context)
     {
         _context = context;
@@ -41,7 +43,7 @@ public class AuthController : ControllerBase
                 return Unauthorized(new { message = "Invalid Credentials" });
             }
 
-            var token = authService.GenerateToken(user.UserId);
+            var token = _authService.authService.GenerateToken(user.UserId);
 
             var responseObj = new
             {

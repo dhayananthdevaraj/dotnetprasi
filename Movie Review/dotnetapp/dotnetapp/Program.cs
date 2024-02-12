@@ -12,14 +12,12 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 // Register AuthService
 // Register AuthService as a scoped service
 builder.Services.AddScoped<AuthService>();
 
 var app = builder.Build();
 app.UseMiddleware<JwtMiddleware>();
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

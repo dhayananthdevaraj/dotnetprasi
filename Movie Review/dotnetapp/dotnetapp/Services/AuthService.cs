@@ -49,13 +49,13 @@ namespace dotnetapp.Services
     {
         tokenHandler.ValidateToken(token, validationParameters, out _);
         Console.WriteLine("try");
-        return true;
+        return "true";
     }
     catch (Exception)
     {
         Console.WriteLine("Incatch");
         // Token validation failed
-        return false;
+        return "false";
     }
 }
 

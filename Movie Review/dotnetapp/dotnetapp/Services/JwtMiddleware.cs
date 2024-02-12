@@ -17,7 +17,7 @@ public class JwtMiddleware
         var authorizationHeader = context.Request.Headers["Authorization"];
         var token = authorizationHeader.ToString().Replace("Bearer ", string.Empty);
         if (context.Request.Path.StartsWithSegments("/api/auth/login") ||
-                  context.Request.Path.StartsWithSegments("/api/auth/signup"))
+                  context.Request.Path.StartsWithSegments("/api/auth/register"))
         {
             await _next(context);
             return;

@@ -27,7 +27,9 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // jwt auth 
-// app.UseMiddleware<JwtMiddleware>();
+app.UseCors(); 
+
+app.UseMiddleware<JwtMiddleware>();
 
 
 
@@ -52,7 +54,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-app.UseCors(); 
 
 app.MapControllers();
 

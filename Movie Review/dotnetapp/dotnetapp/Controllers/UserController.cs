@@ -92,7 +92,7 @@ public class AuthController : ControllerBase
                 return Unauthorized(new { message = "Invalid or expired token" });
             }
             var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
-
+            Console.WriteLine("userIdClaim", userIdClaim);
             if (userIdClaim == null)
             {
                 return Unauthorized(new { message = "Invalid or missing token" });

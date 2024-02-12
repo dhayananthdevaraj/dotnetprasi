@@ -30,31 +30,34 @@ namespace dotnetapp.Services
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public static bool ValidateJwt(string token)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var validationParameters = new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(HardcodedJwtSecretKey)),
-                ValidateIssuer = false, // Set to true if you want to validate the issuer
-                ValidateAudience = false, // Set to true if you want to validate the audience
-                RequireExpirationTime = true,
-                ValidateLifetime = true,
-                ClockSkew = TimeSpan.Zero // Adjust the allowed clock skew if needed
-            };
+    public static bool ValidateJwt(string token)
+{
+    var tokenHandler = new JwtSecurityTokenHandler();
+    Console.WriteLine("Token in serv"+token);
+    var validationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(HardcodedJwtSecretKey)),
+        ValidateIssuer = false, // Set to true if you want to validate the issuer
+        ValidateAudience = false, // Set to true if you want to validate the audience
+        RequireExpirationTime = true,
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.Zero // No clock skew for a basic check
+    };
 
-            try
-            {
-                ClaimsPrincipal principal = tokenHandler.ValidateToken(token, validationParameters, out _);
-                Console.WriteLine("principal.Identity?.IsAuthenticated",principal.Identity?.IsAuthenticated);
-                return principal.Identity?.IsAuthenticated ?? false;
-            }
-            catch (Exception)
-            {
-                // Token validation failed
-                return false;
-            }
-        }
+    try
+    {
+        tokenHandler.ValidateToken(token, validationParameters, out _);
+        Console.WriteLine("try");
+        return true;
+    }
+    catch (Exception)
+    {
+        Console.WriteLine("Incatch");
+        // Token validation failed
+        return false;
+    }
+}
+
     }
 }

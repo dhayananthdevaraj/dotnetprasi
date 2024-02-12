@@ -29,5 +29,31 @@ namespace dotnetapp.Services
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+        public static bool ValidateJwt(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var validationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(HardcodedJwtSecretKey)),
+                ValidateIssuer = false, // Set to true if you want to validate the issuer
+                ValidateAudience = false, // Set to true if you want to validate the audience
+                RequireExpirationTime = true,
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero // Adjust the allowed clock skew if needed
+            };
+
+            try
+            {
+                ClaimsPrincipal principal = tokenHandler.ValidateToken(token, validationParameters, out _);
+                return principal.Identity?.IsAuthenticated ?? false;
+            }
+            catch (Exception)
+            {
+                // Token validation failed
+                return false;
+            }
+        }
     }
 }

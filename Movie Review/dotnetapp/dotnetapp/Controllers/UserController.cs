@@ -90,19 +90,7 @@ public class AuthController : ControllerBase
             if (a == "false")
             {
                 return Unauthorized(new { message = "Invalid or expired token" });
-            }
-            var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
-            Console.WriteLine("userIdClaim", userIdClaim);
-            if (userIdClaim == null)
-            {
-                return Unauthorized(new { message = "Invalid or missing token" });
-            }
-
-            // Validate the user ID from the token
-            if (!int.TryParse(userIdClaim.Value, out int userId))
-            {
-                return Unauthorized(new { message = "Invalid user ID in the token" });
-            }
+            }          
             var users = await _context.Users.Select(u => new { u.FirstName, u.LastName, u.Role, u.UserId }).ToListAsync();
             return Ok(users);
         }

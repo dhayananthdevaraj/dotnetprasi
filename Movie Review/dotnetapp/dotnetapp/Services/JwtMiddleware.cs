@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using dotnetapp.Services;
+using Newtonsoft.Json;
 
 public class JwtMiddleware
 {
@@ -27,8 +28,16 @@ public class JwtMiddleware
         }
         else
         {
-            context.Response.StatusCode = 401; // Unauthorized
-            await context.Response.WriteAsync("Invalid or expired token");
+        context.Response.StatusCode = 401;
+            context.Response.ContentType = "application/json";
+
+            var responseMessage = new
+            {
+                message = "Invalid or expired token"
+            };
+
+            await context.Response.WriteAsync(JsonConvert.SerializeObject(responseMessage));
+            return;
         }
     }
 }

@@ -15,11 +15,6 @@ builder.Services.AddSwaggerGen();
 // Register AuthService
 // Register AuthService as a scoped service
 builder.Services.AddScoped<AuthService>();
-
-var app = builder.Build();
-
-// jwt auth 
-// app.UseMiddleware<JwtMiddleware>();
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
@@ -29,6 +24,22 @@ builder.Services.AddCors(options =>
                .AllowAnyHeader();
     });
 });
+var app = builder.Build();
+
+// jwt auth 
+// app.UseMiddleware<JwtMiddleware>();
+
+
+
+// builder.Services.AddCors(options =>
+// {
+//     options.AddDefaultPolicy(builder =>
+//     {
+//         builder.AllowAnyOrigin()
+//                .AllowAnyMethod()
+//                .AllowAnyHeader();
+//     });
+// });
 
 
 // Configure the HTTP request pipeline.
@@ -41,6 +52,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseCors(); 
 
 app.MapControllers();
 

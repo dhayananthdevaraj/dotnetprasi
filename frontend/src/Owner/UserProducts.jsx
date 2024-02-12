@@ -29,7 +29,7 @@ const UserProducts = () => {
 const productResponse = await axios.get(
   apiUrl + `/api/job/user/${JSON.parse(localStorage.getItem("userData")).userId}?searchValue=${searchTerm}`  ,
   { 
-    headers: { Authorization: `${token}` },
+    headers: { Authorization: `Bearer ${token}` },
   }
 );
       console.log("productResponse", productResponse);

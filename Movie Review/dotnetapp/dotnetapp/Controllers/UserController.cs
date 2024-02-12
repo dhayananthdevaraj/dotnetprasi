@@ -11,7 +11,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens; // Add this using directive
 using Microsoft.AspNetCore.Authorization;  // Add this using directive for [Authorize]
 
-[Route("auth/api/")]
+[Route("api/auth/")]
 [ApiController]
 public class AuthController : ControllerBase
 {

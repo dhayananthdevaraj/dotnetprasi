@@ -30,7 +30,7 @@ namespace dotnetapp.Services
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-    public static string ValidateJwt(string token)
+    public static bool ValidateJwt(string token)
 {
     var tokenHandler = new JwtSecurityTokenHandler();
     Console.WriteLine("Token in serv"+token);
@@ -49,13 +49,13 @@ namespace dotnetapp.Services
     {
         tokenHandler.ValidateToken(token, validationParameters, out _);
         Console.WriteLine("try");
-        return "true";
+        return true;
     }
     catch (Exception)
     {
         Console.WriteLine("Incatch");
         // Token validation failed
-        return "false";
+        return false;
     }
 }
 

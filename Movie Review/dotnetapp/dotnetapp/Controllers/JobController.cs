@@ -20,7 +20,15 @@ public class JobsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Job>>> GetAllJobs([FromQuery] int? sortValue = 1, [FromQuery] string? searchValue = "")
     {
-    
+            var authorizationHeader = HttpContext.Request.Headers["Authorization"];
+            var token = authorizationHeader.ToString().Replace("Bearer ", string.Empty);
+            Console.WriteLine("Token" + token);
+            bool a = AuthService.ValidateJwt(token);
+            Console.WriteLine("value is " + a);
+            if (a == false)
+            {
+                return Unauthorized(new { message = "Invalid or expired token" });
+            }    
         var jobs = await _context.Jobs
         .ToListAsync(); // Retrieve all jobs from the database
 

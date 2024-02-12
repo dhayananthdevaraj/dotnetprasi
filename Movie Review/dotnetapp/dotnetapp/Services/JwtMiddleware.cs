@@ -15,7 +15,12 @@ public class JwtMiddleware
     {
         var authorizationHeader = context.Request.Headers["Authorization"];
         var token = authorizationHeader.ToString().Replace("Bearer ", string.Empty);
-
+        if (context.Request.Path.StartsWithSegments("/auth/api/auth/login") ||
+                  context.Request.Path.StartsWithSegments("/auth/api/auth/signup"))
+        {
+            await _next(context);
+            return;
+        }
         if (!string.IsNullOrEmpty(token) && AuthService.ValidateJwt(token))
         {
             await _next.Invoke(context);

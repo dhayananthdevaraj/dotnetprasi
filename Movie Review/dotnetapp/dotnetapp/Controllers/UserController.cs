@@ -41,7 +41,7 @@ public class AuthController : ControllerBase
                 return Unauthorized(new { message = "Invalid Credentials" });
             }
 
-            var token = GenerateToken(user.UserId);
+            var token = authService.GenerateToken(user.UserId);
 
             var responseObj = new
             {
@@ -101,27 +101,27 @@ public class AuthController : ControllerBase
         }
     }
 
-    private string GenerateToken(int userId)
-    {
+//     private string GenerateToken(int userId)
+//     {
        
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(HardcodedJwtSecretKey));
-        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+//         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(HardcodedJwtSecretKey));
+//         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-        var claims = new[]
-        {
-            new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-            // Add additional claims if needed
-        };
+//         var claims = new[]
+//         {
+//             new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+//             // Add additional claims if needed
+//         };
 
-        var token = new JwtSecurityToken(
-            claims: claims,
-            expires: DateTime.UtcNow.AddHours(2), // Token expiry time
-            signingCredentials: credentials
-        );
+//         var token = new JwtSecurityToken(
+//             claims: claims,
+//             expires: DateTime.UtcNow.AddHours(2), // Token expiry time
+//             signingCredentials: credentials
+//         );
 
-        return new JwtSecurityTokenHandler().WriteToken(token);
-    }
-}
+//         return new JwtSecurityTokenHandler().WriteToken(token);
+//     }
+ }
 public class LoginRequestModel
 {
     public string Email { get; set; }

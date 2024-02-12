@@ -18,11 +18,9 @@ public class AuthController : ControllerBase
 
     private readonly ApplicationDbContext _context;
 
-    private readonly AuthService _authService;
-    public AuthController(ApplicationDbContext context, AuthService authService)
+    public AuthController(ApplicationDbContext context)
     {
         _context = context;
-        _authService = authService;
     }
 
     public class LoginRequestModel

@@ -6,7 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace dotnetapp.Services
 {
-    public static class AuthService
+    public class AuthService
     {
         private const string HardcodedJwtSecretKey = "your_hardcoded_secret_key"; // Replace with your actual secret key
 

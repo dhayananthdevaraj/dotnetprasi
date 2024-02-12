@@ -14,7 +14,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Register AuthService
-builder.Services.AddSingleton<AuthService>();
+// Register AuthService as a scoped service
+builder.Services.AddScoped<AuthService>();
 
 var app = builder.Build();
 

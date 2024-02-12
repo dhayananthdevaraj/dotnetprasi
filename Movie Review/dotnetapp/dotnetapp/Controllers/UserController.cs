@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using dotnetapp.Models;
+using dotnetapp.Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -12,16 +13,16 @@ using Microsoft.IdentityModel.Tokens; // Add this using directive
 [Route("auth/api/[controller]")]
 [ApiController]
 public class AuthController : ControllerBase
-{   
-     private const string HardcodedJwtSecretKey = "your_hardcoded_secret_key"; // Replace with your actual secret key
+{
+    private const string HardcodedJwtSecretKey = "your_hardcoded_secret_key"; // Replace with your actual secret key
 
     private readonly ApplicationDbContext _context;
 
     private readonly AuthService _authService;
-
-    public AuthController(ApplicationDbContext context)
+    public AuthController(ApplicationDbContext context, AuthService authService)
     {
         _context = context;
+        _authService = authService;
     }
 
     public class LoginRequestModel
@@ -43,7 +44,7 @@ public class AuthController : ControllerBase
                 return Unauthorized(new { message = "Invalid Credentials" });
             }
 
-            var token = _authService.authService.GenerateToken(user.UserId);
+            var token = AuthService.GenerateToken(user.UserId); // Access static method directly
 
             var responseObj = new
             {
@@ -84,16 +85,16 @@ public class AuthController : ControllerBase
         {
             var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
 
-        if (userIdClaim == null)
-        {
-            return Unauthorized(new { message = "Invalid or missing token" });
-        }
+            if (userIdClaim == null)
+            {
+                return Unauthorized(new { message = "Invalid or missing token" });
+            }
 
-        // Validate the user ID from the token
-        if (!int.TryParse(userIdClaim.Value, out int userId))
-        {
-            return Unauthorized(new { message = "Invalid user ID in the token" });
-        }
+            // Validate the user ID from the token
+            if (!int.TryParse(userIdClaim.Value, out int userId))
+            {
+                return Unauthorized(new { message = "Invalid user ID in the token" });
+            }
             var users = await _context.Users.Select(u => new { u.FirstName, u.LastName, u.Role, u.UserId }).ToListAsync();
             return Ok(users);
         }
@@ -103,27 +104,27 @@ public class AuthController : ControllerBase
         }
     }
 
-//     private string GenerateToken(int userId)
-//     {
-       
-//         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(HardcodedJwtSecretKey));
-//         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+    //     private string GenerateToken(int userId)
+    //     {
 
-//         var claims = new[]
-//         {
-//             new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-//             // Add additional claims if needed
-//         };
+    //         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(HardcodedJwtSecretKey));
+    //         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-//         var token = new JwtSecurityToken(
-//             claims: claims,
-//             expires: DateTime.UtcNow.AddHours(2), // Token expiry time
-//             signingCredentials: credentials
-//         );
+    //         var claims = new[]
+    //         {
+    //             new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+    //             // Add additional claims if needed
+    //         };
 
-//         return new JwtSecurityTokenHandler().WriteToken(token);
-//     }
- }
+    //         var token = new JwtSecurityToken(
+    //             claims: claims,
+    //             expires: DateTime.UtcNow.AddHours(2), // Token expiry time
+    //             signingCredentials: credentials
+    //         );
+
+    //         return new JwtSecurityTokenHandler().WriteToken(token);
+    //     }
+}
 public class LoginRequestModel
 {
     public string Email { get; set; }

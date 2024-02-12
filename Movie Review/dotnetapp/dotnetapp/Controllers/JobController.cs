@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using dotnetapp.Models; // Assuming your models are in the DotNetApp.Models namespace
 
-[Route("api/[controller]")]
+[Route("api/job")]
 [ApiController]
 public class JobsController : ControllerBase
 {

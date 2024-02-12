@@ -84,7 +84,7 @@ public class AuthController : ControllerBase
         {
             var authorizationHeader = HttpContext.Request.Headers["Authorization"];
             var token = authorizationHeader.ToString().Replace("Bearer ", string.Empty);
-
+  Console.WriteLine("Token"+token);
             if (string.IsNullOrEmpty(token) || !AuthService.ValidateJwt(token))
             {
                 return Unauthorized(new { message = "Invalid or expired token" });

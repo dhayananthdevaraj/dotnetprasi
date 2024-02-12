@@ -47,6 +47,7 @@ namespace dotnetapp.Services
             try
             {
                 ClaimsPrincipal principal = tokenHandler.ValidateToken(token, validationParameters, out _);
+                Console.WriteLine("principal.Identity?.IsAuthenticated",principal.Identity?.IsAuthenticated);
                 return principal.Identity?.IsAuthenticated ?? false;
             }
             catch (Exception)

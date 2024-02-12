@@ -61,7 +61,7 @@ public class AuthController : ControllerBase
         }
     }
 
-    [HttpPost("signup")]
+    [HttpPost("register")]
     public async Task<ActionResult> AddUser([FromBody] User newUser)
     {
         try

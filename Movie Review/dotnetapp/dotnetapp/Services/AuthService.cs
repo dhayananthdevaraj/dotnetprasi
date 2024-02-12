@@ -30,7 +30,7 @@ namespace dotnetapp.Services
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-    public static bool ValidateJwt(string token)
+    public static string ValidateJwt(string token)
 {
     var tokenHandler = new JwtSecurityTokenHandler();
     Console.WriteLine("Token in serv"+token);

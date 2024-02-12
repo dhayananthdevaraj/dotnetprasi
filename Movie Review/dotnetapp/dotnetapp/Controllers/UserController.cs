@@ -9,6 +9,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens; // Add this using directive
+using Microsoft.AspNetCore.Authorization;  // Add this using directive for [Authorize]
 
 [Route("auth/api/[controller]")]
 [ApiController]
@@ -81,6 +82,13 @@ public class AuthController : ControllerBase
     {
         try
         {
+            var authorizationHeader = HttpContext.Request.Headers["Authorization"];
+            var token = authorizationHeader.ToString().Replace("Bearer ", string.Empty);
+
+            if (string.IsNullOrEmpty(token) || !AuthService.ValidateJwt(token))
+            {
+                return Unauthorized(new { message = "Invalid or expired token" });
+            }
             var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
 
             if (userIdClaim == null)

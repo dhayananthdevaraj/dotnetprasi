@@ -1,0 +1,119 @@
+[
+    {
+      "name": "renders_login_component",
+      "weightage": 0.0344827586
+    },
+    {
+      "name": "renders_email_input",
+      "weightage": 0.0344827586
+    },
+    {
+      "name": "renders_password_input",
+      "weightage": 0.0344827586
+    },
+    {
+      "name": "renders_login_button",
+      "weightage": 0.0344827586
+    },
+    {
+      "name": "renders_signup_link",
+      "weightage": 0.0344827586
+    },
+    {
+      "name": "displays_email_required_error_when_email_is_empty",
+      "weightage": 0.0344827586
+    },
+    {
+      "name": "displays_invalid_email_error_when_email_is_invalid",
+      "weightage": 0.0344827586
+    },
+    {
+      "name": "displays_password_required_error_when_password_is_empty",
+      "weightage": 0.0344827586
+    },
+    {
+      "name": "displays_password_length_error_when_password_is_too_short",
+      "weightage": 0.0344827586
+    },
+    {
+      "name": "updates_first_name_field_correctly",
+      "weightage": 0.0344827586
+    },
+    {
+      "name": "updates_last_name_field_correctly",
+      "weightage": 0.0344827586
+    },
+    {
+      "name": "updates_mobile_number_field_correctly",
+      "weightage": 0.0344827586
+    },
+    {
+      "name": "updates_email_field_correctly",
+      "weightage": 0.0344827586
+    },
+    {
+      "name": "updates_confirm_password_field_correctly",
+      "weightage": 0.0344827586
+    },
+    {
+      "name": "renders_user_products_component",
+      "weightage": 0.0344827586
+    },
+    {
+      "name": "logout_button_is_present",
+      "weightage": 0.0344827586
+    },
+    {
+      "name": "add_new_item_button_is_present",
+      "weightage": 0.0344827586
+    },
+    {
+      "name": "search_input_field_is_present",
+      "weightage": 0.0344827586
+    },
+    {
+      "name": "renders_create_product_component",
+      "weightage": 0.0344827586
+    },
+    {
+      "name": "create_product_button_is_present",
+      "weightage": 0.0344827586
+    },
+    {
+      "name": "back_button_is_present",
+      "weightage": 0.0344827586
+    },
+    {
+      "name": "category_dropdown_is_present",
+      "weightage": 0.0344827586
+    },
+    {
+      "name": "description_is_present",
+      "weightage": 0.0344827586
+    },
+    {
+      "name": "price_is_present",
+      "weightage": 0.0344827586
+    },
+    {
+      "name": "product_is_present",
+      "weightage": 0.0344827586
+    },
+    {
+      "name": "renders_products_list_component",
+      "weightage": 0.0344827586
+    },
+    {
+      "name": "products_table_is_present",
+      "weightage": 0.0344827586
+    },
+    {
+      "name": "table_headers_are_present",
+      "weightage": 0.0344827586
+    },
+    {
+      "name": "logout_button_is_present_in_userproducts",
+      "weightage": 0.034482759
+    }
+  ]
+  

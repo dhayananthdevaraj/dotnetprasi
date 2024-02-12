@@ -1,0 +1,192 @@
+/* App.css (or create a separate CSS file) */
+
+/* Style for the entire ProductsList component */
+.ProductsList {
+    margin: 20px;
+}
+
+/* Style for the table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+/* Style for the popup */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* semi-transparent black background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    position: relative;
+    text-align: center;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Blur effect for the background when the popup is open */
+.popup-open {
+    filter: blur(6px);
+}
+/* CSS for Delete Popup */
+.delete-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* backgroundcolor: #f2f2f2; Light gray background color */
+    border: 1px solid black;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    text-align: center;
+    z-index: 2; /* Above the overlay */
+}
+
+.delete-popup p {
+    margin: 0;
+    padding: 40px;
+}
+
+.delete-popup button {
+    /* background-color: #ff6961; Red color, you can choose your own */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.delete-popup button:hover {
+    background-color: #e60000; /* A slightly darker shade of red */
+}
+
+.delete-popup button:last-child {
+    background-color: #ccc; /* Gray color for Cancel button */
+}
+
+.delete-popup button:last-child:hover {
+    background-color: #999; /* A slightly darker shade of gray for Cancel button on hover */
+}
+
+.styledbutton{
+    float: right;
+    margin: 5px;
+}
+.sortButtons{
+    background-color: white ;
+    padding: 3px;
+    float: left;
+    margin-top: 1px;
+  }
+
+  .ProductsList {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .styledbutton {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  h1 {
+    margin-top: 20px;
+  }
+  
+  .card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .product-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+    width: calc(40% - 20px); /* Adjust the width as needed */
+    margin-bottom: 20px;
+    cursor: pointer;
+  }
+  
+  .product-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .product-card img {
+    width: 80%;
+    height: 250px ;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .card-details {
+    padding: 1px;
+  }
+  
+  .action-buttons {
+    display: flex;
+    margin-left: 160px;
+    margin-top: 10px;
+  }
+  
+  .action-buttons button {
+    padding: 8px;
+    cursor: pointer;
+  }
+  
+  .norecord {
+    margin-top: 20px;
+  }
+  
+  .delete-popup {
+    background-color: white;
+    /* Add styles for the delete popup if needed */
+  }
+  
+  
+  .styledbutton {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+  }

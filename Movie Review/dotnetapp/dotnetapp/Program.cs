@@ -29,7 +29,7 @@ var app = builder.Build();
 // jwt auth 
 app.UseCors(); 
 
-// app.UseMiddleware<JwtMiddleware>();
+app.UseMiddleware<JwtMiddleware>();
 
 
 

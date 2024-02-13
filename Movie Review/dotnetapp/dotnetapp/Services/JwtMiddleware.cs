@@ -24,6 +24,7 @@ public class JwtMiddleware
         }
         if (!string.IsNullOrEmpty(token) && AuthService.ValidateJwt(token))
         {
+            Console.WriteLine("Validated");
             await _next.Invoke(context);
         }
         else

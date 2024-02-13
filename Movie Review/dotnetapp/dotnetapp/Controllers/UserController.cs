@@ -91,7 +91,7 @@ public class AuthController : ControllerBase
             {
                 return Unauthorized(new { message ="Invalid or expired token"});
             }          
-            var users = await _context.Users.Select(u => new { u.FirstName, u.LastName, u.Role, u.UserId }).ToListAsync();
+            var users = await _context.Users.Select(u => new { u.FirstName, u.LastName, u.Role, u.UserId,u.Email,u.MobileNumber }).ToListAsync();
             return Ok(users);
         }
         catch (Exception ex)

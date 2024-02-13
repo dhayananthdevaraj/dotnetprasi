@@ -10,7 +10,7 @@ namespace dotnetapp.Services
     {
         private const string HardcodedJwtSecretKey = "your_hardcoded_secret_key"; // Replace with your actual secret key
 
-        public static string GenerateToken(int userId)
+        public static string GenerateToken(int userId, string username, string role)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(HardcodedJwtSecretKey));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -18,6 +18,10 @@ namespace dotnetapp.Services
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+                new Claim(ClaimTypes.Name, username),
+                new Claim(ClaimTypes.Role, role), // Add role claim
+
+
                 // Add additional claims if needed
             };
 

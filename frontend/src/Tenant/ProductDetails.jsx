@@ -8,7 +8,7 @@ const RentalList = () => {
     const [rentals, setRentals] = useState([]);
     const [selectedRental, setSelectedRental] = useState(null);
     const [showPopup, setShowPopup] = useState(false);
-    const [searchTerm, setSearchTerm] = useState(null);
+    const [searchTerm, setSearchTerm] = useState("");
     const [sortValue, setSortValue] = useState(1);
     const navigate = useNavigate();
 

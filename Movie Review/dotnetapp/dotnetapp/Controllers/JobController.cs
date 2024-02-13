@@ -20,24 +20,25 @@ public class JobsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Job>>> GetAllJobs([FromQuery] int? sortValue = 1, [FromQuery] string? searchValue = "")
     {
-            // var authorizationHeader = HttpContext.Request.Headers["Authorization"];
-            // var token = authorizationHeader.ToString().Replace("Bearer ", string.Empty);
-            // Console.WriteLine("Token" + token);
-            // bool a = AuthService.ValidateJwt(token);
-            // Console.WriteLine("value is " + a);
-            // if (a == false)
-            // {
-            //     return Unauthorized(new { message = "Invalid or expired token" });
-            // }    
+
         var jobs = await _context.Jobs
         .ToListAsync(); // Retrieve all jobs from the database
 
+    if (!string.IsNullOrEmpty(searchValue))
+    {
+
+        Console.WriteLine("!string.IsNullOrEmpty(searchValue)",!string.IsNullOrEmpty(searchValue));
         var searchRegex = new System.Text.RegularExpressions.Regex(searchValue, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
         jobs = jobs
-            .Where(job => searchRegex.IsMatch(job.Title)) // Filter on the client-side
-                                                          // .OrderBy(job => job.StartDate) // Sort based on StartDate and sortValue
-            .ToList(); // Convert back to List
+            .Where(job => searchRegex.IsMatch(job.Title)).ToList(); // Apply search filter
+    }
+    // var searchRegex = new System.Text.RegularExpressions.Regex(searchValue, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+    //         jobs = jobs
+    //             .Where(job => searchRegex.IsMatch(job.Title)).ToList(); // Convert back to List
+
+                                                      // .OrderBy(job => job.StartDate) // Sort based on StartDate and sortValue
         if (sortValue == -1)
         {
             jobs = jobs.OrderByDescending(job => job.StartDate).ToList(); // Sort in descending order
@@ -133,7 +134,7 @@ public class JobsController : ControllerBase
     {
 
         // var searchRegex = new System.Text.RegularExpressions.Regex(searchValue, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
-Console.WriteLine("searchValue"+searchValue);
+        Console.WriteLine("searchValue" + searchValue);
         var jobs = await _context.Jobs
             // .Where(job => job.UserId == userId && searchRegex.IsMatch(job.Title))
             .ToListAsync();

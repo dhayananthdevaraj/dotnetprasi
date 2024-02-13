@@ -8,8 +8,7 @@ namespace dotnetapp.Models
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<Job> Jobs { get; set; }
-        public DbSet<Movie> Movies { get; set; }
-        public DbSet<Review> Reviews { get; set; }
+        public DbSet<Cricket> Jobs { get; set; }
+      
     }
 }

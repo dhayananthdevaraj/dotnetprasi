@@ -4,153 +4,121 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using dotnetapp.Models; // Assuming your models are in the DotNetApp.Models namespace
+using dotnetapp.Models;
 
-[Route("api/job")]
+[Route("api/tournaments")]
 [ApiController]
-public class JobsController : ControllerBase
+public class CricketTournamentController : ControllerBase
 {
     private readonly ApplicationDbContext _context; // Replace YourDbContext with your actual DbContext class
 
-    public JobsController(ApplicationDbContext context)
+    public CricketTournamentController(ApplicationDbContext context)
     {
         _context = context;
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Job>>> GetAllJobs([FromQuery] int? sortValue = 1, [FromQuery] string? searchValue = "")
+    public async Task<ActionResult<IEnumerable<CricketTournament>>> GetAllCricketTournaments([FromQuery] int? sortValue = 1, [FromQuery] string? searchValue = "")
     {
-
-        var jobs = await _context.Jobs
-        .ToListAsync(); // Retrieve all jobs from the database
-
-    if (!string.IsNullOrEmpty(searchValue))
-    {
-
-        Console.WriteLine("!string.IsNullOrEmpty(searchValue)",!string.IsNullOrEmpty(searchValue));
-        var searchRegex = new System.Text.RegularExpressions.Regex(searchValue, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
-
-        jobs = jobs
-            .Where(job => searchRegex.IsMatch(job.Title)).ToList(); // Apply search filter
-    }
-    // var searchRegex = new System.Text.RegularExpressions.Regex(searchValue, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
-
-    //         jobs = jobs
-    //             .Where(job => searchRegex.IsMatch(job.Title)).ToList(); // Convert back to List
-
-                                                      // .OrderBy(job => job.StartDate) // Sort based on StartDate and sortValue
-        if (sortValue == -1)
-        {
-            jobs = jobs.OrderByDescending(job => job.StartDate).ToList(); // Sort in descending order
-        }
-        else
-        {
-            jobs = jobs.OrderBy(job => job.StartDate).ToList(); // Sort in ascending order (default)
-        }
-
-        return Ok(jobs);
-    }
-
-    [HttpGet("{jobId}")]
-    public async Task<ActionResult<Job>> GetJobById(int jobId)
-    {
-        var job = await _context.Jobs
-            .FirstOrDefaultAsync(job => job.JobId == jobId);
-
-        if (job == null)
-        {
-            return NotFound(new { message = "Cannot find any job" });
-        }
-
-        return Ok(job);
-    }
-
-    [HttpPost]
-    public async Task<ActionResult> AddJob([FromBody] Job job)
-    {
-        try
-        {
-            _context.Jobs.Add(job);
-            await _context.SaveChangesAsync();
-
-            return Ok(new { message = "Job added successfully" });
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { message = ex.Message });
-        }
-    }
-
-    [HttpPut("{jobId}")]
-    public async Task<ActionResult> UpdateJob(int jobId, [FromBody] Job job)
-    {
-        try
-        {
-            var existingJob = await _context.Jobs.FirstOrDefaultAsync(j => j.JobId == jobId);
-
-            if (existingJob == null)
-            {
-                return NotFound(new { message = "Cannot find any job" });
-            }
-            job.JobId = jobId;
-
-
-            _context.Entry(existingJob).CurrentValues.SetValues(job);
-            await _context.SaveChangesAsync();
-
-            return Ok(new { message = "Job updated successfully" });
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { message = ex.Message });
-        }
-    }
-
-    [HttpDelete("{jobId}")]
-    public async Task<ActionResult> DeleteJob(int jobId)
-    {
-        try
-        {
-            var job = await _context.Jobs.FirstOrDefaultAsync(j => j.JobId == jobId);
-
-            if (job == null)
-            {
-                return NotFound(new { message = "Cannot find any job" });
-            }
-
-            _context.Jobs.Remove(job);
-            await _context.SaveChangesAsync();
-
-            return Ok(new { message = "Job deleted successfully" });
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { message = ex.Message });
-        }
-    }
-
-    [HttpGet("user/{userId}")]
-    public async Task<ActionResult<IEnumerable<Job>>> GetJobsByUserId(int userId, [FromQuery] string? searchValue = null)
-    {
-
-        // var searchRegex = new System.Text.RegularExpressions.Regex(searchValue, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
-        Console.WriteLine("searchValue" + searchValue);
-        var jobs = await _context.Jobs
-            // .Where(job => job.UserId == userId && searchRegex.IsMatch(job.Title))
+        var tournaments = await _context.CricketTournaments
             .ToListAsync();
-
-        jobs = jobs
-            .Where(job => job.UserId == userId)
-                // .OrderBy(job => job.StartDate) // Sort based on StartDate and sortValue
-                .ToList();
 
         if (!string.IsNullOrEmpty(searchValue))
         {
             var searchRegex = new System.Text.RegularExpressions.Regex(searchValue, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
-            jobs = jobs.Where(job => searchRegex.IsMatch(job.Title)).ToList();
+
+            tournaments = tournaments
+                .Where(tournament => searchRegex.IsMatch(tournament.TournamentName)).ToList();
         }
 
+        if (sortValue == -1)
+        {
+            tournaments = tournaments.OrderByDescending(tournament => tournament.StartDate).ToList();
+        }
+        else
+        {
+            tournaments = tournaments.OrderBy(tournament => tournament.StartDate).ToList();
+        }
 
-        return Ok(jobs);
+        return Ok(tournaments);
     }
+
+    [HttpGet("{tournamentId}")]
+    public async Task<ActionResult<CricketTournament>> GetCricketTournamentById(int tournamentId)
+    {
+        var tournament = await _context.CricketTournaments
+            .FirstOrDefaultAsync(tournament => tournament.TournamentId == tournamentId);
+
+        if (tournament == null)
+        {
+            return NotFound(new { message = "Cannot find any cricket tournament" });
+        }
+
+        return Ok(tournament);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> AddCricketTournament([FromBody] CricketTournament tournament)
+    {
+        try
+        {
+            _context.CricketTournaments.Add(tournament);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Cricket tournament added successfully" });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = ex.Message });
+        }
+    }
+
+    [HttpPut("{tournamentId}")]
+    public async Task<ActionResult> UpdateCricketTournament(int tournamentId, [FromBody] CricketTournament tournament)
+    {
+        try
+        {
+            var existingTournament = await _context.CricketTournaments.FirstOrDefaultAsync(t => t.TournamentId == tournamentId);
+
+            if (existingTournament == null)
+            {
+                return NotFound(new { message = "Cannot find any cricket tournament" });
+            }
+
+            tournament.TournamentId = tournamentId;
+
+            _context.Entry(existingTournament).CurrentValues.SetValues(tournament);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Cricket tournament updated successfully" });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = ex.Message });
+        }
+    }
+
+    [HttpDelete("{tournamentId}")]
+    public async Task<ActionResult> DeleteCricketTournament(int tournamentId)
+    {
+        try
+        {
+            var tournament = await _context.CricketTournaments.FirstOrDefaultAsync(t => t.TournamentId == tournamentId);
+
+            if (tournament == null)
+            {
+                return NotFound(new { message = "Cannot find any cricket tournament" });
+            }
+
+            _context.CricketTournaments.Remove(tournament);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Cricket tournament deleted successfully" });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = ex.Message });
+        }
+    }
+    
 }

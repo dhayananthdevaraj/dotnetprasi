@@ -43,14 +43,14 @@ public class AuthController : ControllerBase
                 return Ok(new { message = "Invalid Credentials" });
             }
 
-            var token = AuthService.GenerateToken(user.UserId,user.FirstName+user.LastName,user.Role); // Access static method directly
+            var token = AuthService.GenerateToken(user.UserId); // Access static method directly
 
             var responseObj = new
             {
-                // username = $"{user.FirstName} {user.LastName}",
-                // role = user.Role,
-                token = token
-                // userId = user.UserId
+                username = $"{user.FirstName} {user.LastName}",
+                role = user.Role,
+                token = token,
+                userId = user.UserId
             };
 
             return Ok(responseObj);

@@ -11,7 +11,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens; // Add this using directive
 using Microsoft.AspNetCore.Authorization;  // Add this using directive for [Authorize]
 
-[Route("api/auth/")]
+[Route("api/")]
 [ApiController]
 public class AuthController : ControllerBase
 {
@@ -30,7 +30,7 @@ public class AuthController : ControllerBase
         public string Password { get; set; }
     }
 
-    [HttpPost("login")]
+    [HttpPost("auth/login")]
     public async Task<ActionResult> GetUserByUsernameAndPassword([FromBody] LoginRequestModel request)
     {
         try
@@ -61,7 +61,7 @@ public class AuthController : ControllerBase
         }
     }
 
-    [HttpPost("register")]
+    [HttpPost("auth/register")]
     public async Task<ActionResult> AddUser([FromBody] User newUser)
     {
         try

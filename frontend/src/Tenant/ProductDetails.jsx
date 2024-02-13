@@ -21,6 +21,10 @@ const RentalList = () => {
             const userResponse = await axios.get(apiUrl + '/api/users', {
                 headers: { Authorization: `${localStorage.getItem("token")}` }
             });
+            if(searchTerm==null)
+            {
+                searchTerm=""
+            }
             const productResponse = await axios.get(
                 `${apiUrl}/api/job?searchValue=${searchTerm}&sortValue=${sortValue}`,
                 {
@@ -69,7 +73,7 @@ console.log("rentalsWithUserData",rentalsWithUserData);
                         type="text"
                         placeholder="Search by job title"
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange={(e) =>   setSearchTerm(e.target.value)}
                     />
                 </div>
                 <div className="sort-box">

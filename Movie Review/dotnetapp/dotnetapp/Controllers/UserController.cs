@@ -40,7 +40,7 @@ public class AuthController : ControllerBase
 
             if (user == null)
             {
-                return Unauthorized(new { message = "Invalid Credentials" });
+                return Ok(new { message = "Invalid Credentials" });
             }
 
             var token = AuthService.GenerateToken(user.UserId); // Access static method directly

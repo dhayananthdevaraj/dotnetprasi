@@ -25,9 +25,9 @@ builder.Services.AddCors(options =>
     });
 });
 var app = builder.Build();
+app.UseCors(); 
 
 // jwt auth 
-app.UseCors(); 
 
 app.UseMiddleware<JwtMiddleware>();
 

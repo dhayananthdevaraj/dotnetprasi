@@ -121,4 +121,22 @@ public class CricketTournamentController : ControllerBase
         }
     }
 
+
+    [HttpGet("user/{userId}")]
+public async Task<ActionResult<IEnumerable<CricketTournament>>> GetTournamentsByUserId(int userId, [FromQuery] string? searchValue = null)
+{
+    var tournaments = await _context.CricketTournaments
+        .Where(tournament => tournament.UserId == userId)
+        .ToListAsync();
+
+    if (!string.IsNullOrEmpty(searchValue))
+    {
+        var searchRegex = new System.Text.RegularExpressions.Regex(searchValue, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+        tournaments = tournaments.Where(tournament => searchRegex.IsMatch(tournament.TournamentName)).ToList();
+    }
+
+    return Ok(tournaments);
+}
+
+
 }

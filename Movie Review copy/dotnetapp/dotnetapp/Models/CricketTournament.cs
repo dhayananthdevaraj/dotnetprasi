@@ -2,6 +2,7 @@ namespace dotnetapp.Models
 {
     public class CricketTournament
     {
+        [Key]
         public int TournamentId { get; set; }
         public int UserId { get; set; }
         public string TournamentName { get; set; }

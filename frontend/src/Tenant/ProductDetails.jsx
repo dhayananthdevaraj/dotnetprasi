@@ -44,7 +44,7 @@ const RentalList = () => {
 console.log("rentalsWithUserData",rentalsWithUserData);
             setRentals(rentalsWithUserData);
         } catch (error) {
-            navigate("/error");
+            // navigate("/error");
         }
     }
 

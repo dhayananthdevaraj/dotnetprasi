@@ -1,17 +1,16 @@
-
-namespace dotnetapp.Models
+public class Player
 {
-    public class Job
-    {
-        public int JobId { get; set; } // Assuming you have a custom ObjectId type
-        public int UserId { get; set; } // Assuming you have a custom ObjectId type
-        public string Title { get; set; }
-        public string Category { get; set; }
-        public string Location { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public string Description { get; set; }
-        public string CoverImage { get; set; } // Assuming this is a string for URL or file path
-
-    }
+    public int PlayerId { get; set; }
+    public string PlayerName { get; set; }
+    public int Age { get; set; }
+    public string Country { get; set; }
+    public string BattingStyle { get; set; }
+    public string BowlingStyle { get; set; }
+    public DateTime DateOfBirth { get; set; }
+    public string Role { get; set; } // Batsman, Bowler, All-Rounder, Wicketkeeper, etc.
+    public int TotalMatchesPlayed { get; set; }
+    public int TotalRunsScored { get; set; }
+    public int TotalWicketsTaken { get; set; }
+    public int TotalCatches { get; set; }
+  
 }

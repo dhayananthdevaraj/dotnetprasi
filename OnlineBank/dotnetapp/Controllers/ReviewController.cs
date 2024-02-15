@@ -1,4 +1,4 @@
-// VenueController.cs
+// ReviewController.cs
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -8,51 +8,51 @@ using dotnetapp.Services;
 
 namespace dotnetapp.Controllers
 {
-    [Route("api/venue")]
+    [Route("api/review")]
     [ApiController]
-    public class VenueController : ControllerBase
+    public class ReviewController : ControllerBase
     {
-        private readonly VenueService _venueService;
+        private readonly ReviewService _reviewService;
 
-        public VenueController(VenueService venueService)
+        public ReviewController(ReviewService reviewService)
         {
-            _venueService = venueService;
+            _reviewService = reviewService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Venue>>> GetAllVenues()
+        public async Task<ActionResult<IEnumerable<Review>>> GetAllReviews()
         {
-            var venues = await _venueService.GetAllVenues();
-            return Ok(venues);
+            var reviews = await _reviewService.GetAllReviews();
+            return Ok(reviews);
         }
 
-        [HttpGet("{venueId}")]
-        public async Task<ActionResult<Venue>> GetVenueById(int venueId)
+        [HttpGet("{reviewId}")]
+        public async Task<ActionResult<Review>> GetReviewById(long reviewId)
         {
-            var venue = await _venueService.GetVenueById(venueId);
+            var review = await _reviewService.GetReviewById(reviewId);
 
-            if (venue == null)
+            if (review == null)
             {
-                return NotFound(new { message = "Cannot find any venue" });
+                return NotFound(new { message = "Cannot find any review" });
             }
 
-            return Ok(venue);
+            return Ok(review);
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddVenue([FromBody] Venue venue)
+        public async Task<ActionResult> AddReview([FromBody] Review review)
         {
             try
             {
-                var success = await _venueService.AddVenue(venue);
+                var success = await _reviewService.AddReview(review);
 
                 if (success)
                 {
-                    return Ok(new { message = "Venue added successfully" });
+                    return Ok(new { message = "Review added successfully" });
                 }
                 else
                 {
-                    return StatusCode(500, new { message = "Failed to add venue" });
+                    return StatusCode(500, new { message = "Failed to add review" });
                 }
             }
             catch (Exception ex)
@@ -61,48 +61,6 @@ namespace dotnetapp.Controllers
             }
         }
 
-        [HttpPut("{venueId}")]
-        public async Task<ActionResult> UpdateVenue(int venueId, [FromBody] Venue venue)
-        {
-            try
-            {
-                var success = await _venueService.UpdateVenue(venueId, venue);
-
-                if (success)
-                {
-                    return Ok(new { message = "Venue updated successfully" });
-                }
-                else
-                {
-                    return NotFound(new { message = "Cannot find any venue" });
-                }
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = ex.Message });
-            }
-        }
-
-        [HttpDelete("{venueId}")]
-        public async Task<ActionResult> DeleteVenue(int venueId)
-        {
-            try
-            {
-                var success = await _venueService.DeleteVenue(venueId);
-
-                if (success)
-                {
-                    return Ok(new { message = "Venue deleted successfully" });
-                }
-                else
-                {
-                    return NotFound(new { message = "Cannot find any venue" });
-                }
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = ex.Message });
-            }
-        }
+        // Implement other CRUD methods as needed
     }
 }

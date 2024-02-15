@@ -26,10 +26,10 @@ namespace dotnetapp.Controllers
             return Ok(fixedDeposits);
         }
 
-        [HttpGet("{fdId}")]
-        public async Task<ActionResult<FixedDeposit>> GetFixedDepositById(long fdId)
+        [HttpGet("{FixedDepositId}")]
+        public async Task<ActionResult<FixedDeposit>> GetFixedDepositById(long FixedDepositId)
         {
-            var fixedDeposit = await _fixedDepositService.GetFixedDepositById(fdId);
+            var fixedDeposit = await _fixedDepositService.GetFixedDepositById(FixedDepositId);
 
             if (fixedDeposit == null)
             {
@@ -61,12 +61,12 @@ namespace dotnetapp.Controllers
             }
         }
 
-        [HttpPut("{fdId}")]
-        public async Task<ActionResult> UpdateFixedDeposit(long fdId, [FromBody] FixedDeposit fixedDeposit)
+        [HttpPut("{FixedDepositId}")]
+        public async Task<ActionResult> UpdateFixedDeposit(long FixedDepositId, [FromBody] FixedDeposit fixedDeposit)
         {
             try
             {
-                var success = await _fixedDepositService.UpdateFixedDeposit(fdId, fixedDeposit);
+                var success = await _fixedDepositService.UpdateFixedDeposit(FixedDepositId, fixedDeposit);
 
                 if (success)
                 {
@@ -83,12 +83,12 @@ namespace dotnetapp.Controllers
             }
         }
 
-        [HttpDelete("{fdId}")]
-        public async Task<ActionResult> DeleteFixedDeposit(long fdId)
+        [HttpDelete("{FixedDepositId}")]
+        public async Task<ActionResult> DeleteFixedDeposit(long FixedDepositId)
         {
             try
             {
-                var success = await _fixedDepositService.DeleteFixedDeposit(fdId);
+                var success = await _fixedDepositService.DeleteFixedDeposit(FixedDepositId);
 
                 if (success)
                 {

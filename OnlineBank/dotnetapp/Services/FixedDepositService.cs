@@ -22,10 +22,10 @@ namespace dotnetapp.Services
             return await _context.FixedDeposits.Include(fd => fd.User).ToListAsync();
         }
 
-        public async Task<FixedDeposit> GetFixedDepositById(long fdId)
+        public async Task<FixedDeposit> GetFixedDepositById(long FixedDepositId)
         {
             return await _context.FixedDeposits.Include(fd => fd.User)
-                .FirstOrDefaultAsync(fd => fd.FDId == fdId);
+                .FirstOrDefaultAsync(fd => fd.FixedDepositId == FixedDepositId);
         }
 
         public async Task<bool> AddFixedDeposit(FixedDeposit fixedDeposit)
@@ -42,17 +42,17 @@ namespace dotnetapp.Services
             }
         }
 
-        public async Task<bool> UpdateFixedDeposit(long fdId, FixedDeposit fixedDeposit)
+        public async Task<bool> UpdateFixedDeposit(long FixedDepositId, FixedDeposit fixedDeposit)
         {
             try
             {
                 var existingFixedDeposit = await _context.FixedDeposits
-                    .FirstOrDefaultAsync(fd => fd.FDId == fdId);
+                    .FirstOrDefaultAsync(fd => fd.FixedDepositId == FixedDepositId);
 
                 if (existingFixedDeposit == null)
                     return false;
 
-                fixedDeposit.FDId = fdId;
+                fixedDeposit.FixedDepositId = FixedDepositId;
                 _context.Entry(existingFixedDeposit).CurrentValues.SetValues(fixedDeposit);
                 await _context.SaveChangesAsync();
                 return true;
@@ -63,12 +63,12 @@ namespace dotnetapp.Services
             }
         }
 
-        public async Task<bool> DeleteFixedDeposit(long fdId)
+        public async Task<bool> DeleteFixedDeposit(long FixedDepositId)
         {
             try
             {
                 var fixedDeposit = await _context.FixedDeposits
-                    .FirstOrDefaultAsync(fd => fd.FDId == fdId);
+                    .FirstOrDefaultAsync(fd => fd.FixedDepositId == FixedDepositId);
 
                 if (fixedDeposit == null)
                     return false;

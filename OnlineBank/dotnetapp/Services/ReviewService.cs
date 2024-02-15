@@ -1,36 +1,36 @@
-// VenueService.cs
-using Microsoft.EntityFrameworkCore;
-using System;
+// ReviewService.cs
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using dotnetapp.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace dotnetapp.Services
 {
-    public class VenueService 
+    public class ReviewService
     {
         private readonly ApplicationDbContext _context;
 
-        public VenueService(ApplicationDbContext context)
+        public ReviewService(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public async Task<IEnumerable<Venue>> GetAllVenues()
+        public async Task<IEnumerable<Review>> GetAllReviews()
         {
-            return await _context.Venues.ToListAsync();
+            return await _context.Reviews.ToListAsync();
         }
 
-        public async Task<Venue> GetVenueById(int venueId)
+        public async Task<Review> GetReviewById(long reviewId)
         {
-            return await _context.Venues.FirstOrDefaultAsync(v => v.VenueId == venueId);
+            return await _context.Reviews
+                .FirstOrDefaultAsync(r => r.ReviewId == reviewId);
         }
 
-        public async Task<bool> AddVenue(Venue venue)
+        public async Task<bool> AddReview(Review review)
         {
             try
             {
-                _context.Venues.Add(venue);
+                _context.Reviews.Add(review);
                 await _context.SaveChangesAsync();
                 return true;
             }
@@ -40,50 +40,6 @@ namespace dotnetapp.Services
             }
         }
 
-        public async Task<bool> UpdateVenue(int venueId, Venue venue)
-        {
-            try
-            {
-                var existingVenue = await _context.Venues.FirstOrDefaultAsync(v => v.VenueId == venueId);
-
-                if (existingVenue == null)
-                {
-                    return false;
-                }
-
-                venue.VenueId = venueId;
-
-                _context.Entry(existingVenue).CurrentValues.SetValues(venue);
-                await _context.SaveChangesAsync();
-
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public async Task<bool> DeleteVenue(int venueId)
-        {
-            try
-            {
-                var venue = await _context.Venues.FirstOrDefaultAsync(v => v.VenueId == venueId);
-
-                if (venue == null)
-                {
-                    return false;
-                }
-
-                _context.Venues.Remove(venue);
-                await _context.SaveChangesAsync();
-
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
+        // Implement other methods as needed
     }
 }

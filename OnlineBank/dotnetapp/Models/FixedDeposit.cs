@@ -5,7 +5,7 @@ namespace dotnetapp.Models
 {
     public class FixedDeposit
     {
-        public long FDId { get; set; }
+        public long FixedDepositId { get; set; }
         public long UserId { get; set; } // Foreign key referencing User
         public decimal Amount { get; set; }
         public int TenureMonths { get; set; }

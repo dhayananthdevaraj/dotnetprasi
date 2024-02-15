@@ -25,7 +25,7 @@ namespace dotnetapp.Services
         public async Task<FDRequest> GetFDRequestById(long requestId)
         {
             return await _context.FDRequests
-                .FirstOrDefaultAsync(fr => fr.RequestId == requestId);
+                .FirstOrDefaultAsync(fr => fr.FDRequestId == requestId);
         }
 
         public async Task<bool> AddFDRequest(FDRequest fdRequest)

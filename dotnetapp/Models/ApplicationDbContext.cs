@@ -16,22 +16,20 @@ namespace dotnetapp.Models
         public DbSet<Schedule> Schedules { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-{
-  modelBuilder.Entity<Schedule>()
-        .HasOne(s => s.Team1)
-        .WithMany()
-        .HasForeignKey(s => s.Team1Id)
-        .OnDelete(DeleteBehavior.Restrict); // Use Restrict for one and NoAction for others
+        {
+            modelBuilder.Entity<Schedule>()
+                  .HasOne(s => s.Team1)
+                  .WithMany()
+                  .HasForeignKey(s => s.Team1Id)
+                  .OnDelete(DeleteBehavior.Restrict); // Use Restrict for one and NoAction for others
 
-    modelBuilder.Entity<Schedule>()
-        .HasOne(s => s.Team2)
-        .WithMany()
-        .HasForeignKey(s => s.Team2Id)
-        .OnDelete(DeleteBehavior.NoAction); 
-    // Configure other relationships
-
-    base.OnModelCreating(modelBuilder);
-}
+            modelBuilder.Entity<Schedule>()
+                .HasOne(s => s.Team2)
+                .WithMany()
+                .HasForeignKey(s => s.Team2Id);    // Configure other relationships
+         
+            base.OnModelCreating(modelBuilder);
+        }
 
     }
 }

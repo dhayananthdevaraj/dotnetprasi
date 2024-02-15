@@ -41,5 +41,6 @@ public class Player
 
     // Foreign key for the Team entity
     public int TeamId { get; set; }
+    public Team? Team { get; set; }
 }
 }

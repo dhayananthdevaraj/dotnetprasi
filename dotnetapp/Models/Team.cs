@@ -13,7 +13,7 @@ public class Team
     public string teamDescription { get; set; }
 
     // Navigation property representing the players in the team
-    // public List<Player> Players { get; set; }
+    public List<Player>? Players { get; set; }
 }
 
 }

@@ -13,7 +13,7 @@ namespace dotnetapp.Models
         public int EventId { get; set; }
 
         // Foreign key referencing the Event table
-        public Event Event { get; set; }
+        // public Event Event { get; set; }
 
         // [Required(ErrorMessage = "Venue is required")]
         public int VenueId { get; set; }

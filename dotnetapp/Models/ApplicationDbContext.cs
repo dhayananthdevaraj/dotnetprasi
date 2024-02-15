@@ -14,5 +14,26 @@ namespace dotnetapp.Models
         public DbSet<Venue> Venues { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<Schedule> Schedules { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    modelBuilder.Entity<Schedule>()
+        .HasOne(s => s.Team1)
+        .WithMany()
+        .HasForeignKey(s => s.Team1Id)
+        .OnDelete(DeleteBehavior.Restrict); // Adjust this behavior as needed
+
+    modelBuilder.Entity<Schedule>()
+        .HasOne(s => s.Team2)
+        .WithMany()
+        .HasForeignKey(s => s.Team2Id)
+        .OnDelete(DeleteBehavior.Restrict); // Adjust this behavior as needed
+
+    // Configure other relationships
+
+    base.OnModelCreating(modelBuilder);
+}
+
     }
 }
+

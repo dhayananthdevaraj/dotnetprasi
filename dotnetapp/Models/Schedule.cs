@@ -13,24 +13,24 @@ namespace dotnetapp.Models
         public int EventId { get; set; }
 
         // Foreign key referencing the Event table
-        public Event Event { get; set; }
+        public Event? Event { get; set; }
 
         // [Required(ErrorMessage = "Venue is required")]
         public int VenueId { get; set; }
-        public Venue Venue { get; set; }
+        public Venue? Venue { get; set; }
 
         // Foreign key referencing the Venue table
 
         // [Required(ErrorMessage = "Referee is required")]
         public int RefereeId { get; set; }
 
-        public Referee Referee { get; set; }
+        public Referee? Referee { get; set; }
 
         public int Team1Id { get; set; }
-        public Team Team1 { get; set; }
+        public Team? Team1 { get; set; }
 
         public int Team2Id { get; set; }
-        public Team Team2 { get; set; }
+        public Team? Team2 { get; set; }
 
 
     }

@@ -9,6 +9,7 @@ public class Referee
 
     // [Range(0, int.MaxValue, ErrorMessage = "Number of matches must be a non-negative number")]
     public int NoOfMatches { get; set; }
+    public List<Schedule>? Schedules { get; set; }
 
     // Navigation property representing the events where the referee officiated
 

@@ -12,8 +12,8 @@ using dotnetapp.Models;
 namespace dotnetapp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240215082336_Second")]
-    partial class Second
+    [Migration("20240215092956_Firsts")]
+    partial class Firsts
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -106,8 +106,6 @@ namespace dotnetapp.Migrations
 
                     b.HasKey("PlayerId");
 
-                    b.HasIndex("TeamId");
-
                     b.ToTable("Players");
                 });
 
@@ -159,8 +157,6 @@ namespace dotnetapp.Migrations
 
                     b.HasKey("ScheduleId");
 
-                    b.HasIndex("EventId");
-
                     b.ToTable("Schedules");
                 });
 
@@ -208,11 +204,11 @@ namespace dotnetapp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Role")
+                    b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserName")
+                    b.Property<string>("UserRole")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -248,31 +244,6 @@ namespace dotnetapp.Migrations
                     b.HasKey("VenueId");
 
                     b.ToTable("Venues");
-                });
-
-            modelBuilder.Entity("dotnetapp.Models.Player", b =>
-                {
-                    b.HasOne("dotnetapp.Models.Team", null)
-                        .WithMany("Players")
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("dotnetapp.Models.Schedule", b =>
-                {
-                    b.HasOne("dotnetapp.Models.Event", "Event")
-                        .WithMany()
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Event");
-                });
-
-            modelBuilder.Entity("dotnetapp.Models.Team", b =>
-                {
-                    b.Navigation("Players");
                 });
 #pragma warning restore 612, 618
         }

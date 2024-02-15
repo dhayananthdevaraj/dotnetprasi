@@ -1,10 +1,10 @@
+// TeamController.cs
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using dotnetapp.Models;
+using dotnetapp.Services;
 
 namespace dotnetapp.Controllers
 {
@@ -12,26 +12,24 @@ namespace dotnetapp.Controllers
     [ApiController]
     public class TeamController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly TeamService _teamService;
 
-        public TeamController(ApplicationDbContext context)
+        public TeamController(TeamService teamService)
         {
-            _context = context;
+            _teamService = teamService;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Team>>> GetAllTeams()
         {
-            var teams = await _context.Teams.ToListAsync();
-
+            var teams = await _teamService.GetAllTeams();
             return Ok(teams);
         }
 
         [HttpGet("{teamId}")]
         public async Task<ActionResult<Team>> GetTeamById(int teamId)
         {
-            var team = await _context.Teams
-                .FirstOrDefaultAsync(t => t.TeamId == teamId);
+            var team = await _teamService.GetTeamById(teamId);
 
             if (team == null)
             {
@@ -46,10 +44,16 @@ namespace dotnetapp.Controllers
         {
             try
             {
-                _context.Teams.Add(team);
-                await _context.SaveChangesAsync();
+                var success = await _teamService.AddTeam(team);
 
-                return Ok(new { message = "Team added successfully" });
+                if (success)
+                {
+                    return Ok(new { message = "Team added successfully" });
+                }
+                else
+                {
+                    return StatusCode(500, new { message = "Failed to add team" });
+                }
             }
             catch (Exception ex)
             {
@@ -62,19 +66,16 @@ namespace dotnetapp.Controllers
         {
             try
             {
-                var existingTeam = await _context.Teams.FirstOrDefaultAsync(t => t.TeamId == teamId);
+                var success = await _teamService.UpdateTeam(teamId, team);
 
-                if (existingTeam == null)
+                if (success)
+                {
+                    return Ok(new { message = "Team updated successfully" });
+                }
+                else
                 {
                     return NotFound(new { message = "Cannot find any team" });
                 }
-
-                team.TeamId = teamId;
-
-                _context.Entry(existingTeam).CurrentValues.SetValues(team);
-                await _context.SaveChangesAsync();
-
-                return Ok(new { message = "Team updated successfully" });
             }
             catch (Exception ex)
             {
@@ -87,17 +88,16 @@ namespace dotnetapp.Controllers
         {
             try
             {
-                var team = await _context.Teams.FirstOrDefaultAsync(t => t.TeamId == teamId);
+                var success = await _teamService.DeleteTeam(teamId);
 
-                if (team == null)
+                if (success)
+                {
+                    return Ok(new { message = "Team deleted successfully" });
+                }
+                else
                 {
                     return NotFound(new { message = "Cannot find any team" });
                 }
-
-                _context.Teams.Remove(team);
-                await _context.SaveChangesAsync();
-
-                return Ok(new { message = "Team deleted successfully" });
             }
             catch (Exception ex)
             {

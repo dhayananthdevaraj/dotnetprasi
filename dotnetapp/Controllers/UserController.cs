@@ -1,3 +1,4 @@
+// UserController.cs
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -5,23 +6,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using dotnetapp.Models;
 using dotnetapp.Services;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.IdentityModel.Tokens; // Add this using directive
-using Microsoft.AspNetCore.Authorization;  // Add this using directive for [Authorize]
+using Microsoft.AspNetCore.Authorization;
 
 [Route("api/")]
 [ApiController]
-public class AuthController : ControllerBase
+public class UserController : ControllerBase
 {
     private const string HardcodedJwtSecretKey = "your_hardcoded_secret_key"; // Replace with your actual secret key
+    private readonly UserService _userService;
 
-    private readonly ApplicationDbContext _context;
-
-    public AuthController(ApplicationDbContext context)
+    public UserController(UserService userService)
     {
-        _context = context;
+        _userService = userService;
     }
 
     public class LoginRequestModel
@@ -35,15 +35,14 @@ public class AuthController : ControllerBase
     {
         try
         {
-            var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.Email == request.Email && u.Password == request.Password);
+            var user = await _userService.GetUserByEmailAndPassword(request.Email, request.Password);
 
             if (user == null)
             {
                 return Ok(new { message = "Invalid Credentials" });
             }
 
-            var token = AuthService.GenerateToken(user.UserId); // Access static method directly
+            var token = GenerateToken(user.UserId);
 
             var responseObj = new
             {
@@ -66,10 +65,16 @@ public class AuthController : ControllerBase
     {
         try
         {
-            await _context.Users.AddAsync(newUser);
-            await _context.SaveChangesAsync();
+            var result = await _userService.AddUser(newUser);
 
-            return Ok(new { message = "Success" });
+            if (result)
+            {
+                return Ok(new { message = "Success" });
+            }
+            else
+            {
+                return StatusCode(500, new { message = "Failed to add user" });
+            }
         }
         catch (Exception ex)
         {
@@ -82,16 +87,7 @@ public class AuthController : ControllerBase
     {
         try
         {
-            var authorizationHeader = HttpContext.Request.Headers["Authorization"];
-            var token = authorizationHeader.ToString().Replace("Bearer ", string.Empty);
-            Console.WriteLine("Token" + token);
-            bool a = AuthService.ValidateJwt(token);
-            Console.WriteLine("value is " + a);
-            if (a == false)
-            {
-                return Unauthorized(new { message ="Invalid or expired token"});
-            }          
-            var users = await _context.Users.Select(u => new { u.UserName, u.UserRole, u.UserId,u.Email,u.MobileNumber }).ToListAsync();
+            var users = await _userService.GetAllUsers();
             return Ok(users);
         }
         catch (Exception ex)
@@ -99,30 +95,4 @@ public class AuthController : ControllerBase
             return StatusCode(500, new { message = ex.Message });
         }
     }
-
-    //     private string GenerateToken(int userId)
-    //     {
-
-    //         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(HardcodedJwtSecretKey));
-    //         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-    //         var claims = new[]
-    //         {
-    //             new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-    //             // Add additional claims if needed
-    //         };
-
-    //         var token = new JwtSecurityToken(
-    //             claims: claims,
-    //             expires: DateTime.UtcNow.AddHours(2), // Token expiry time
-    //             signingCredentials: credentials
-    //         );
-
-    //         return new JwtSecurityTokenHandler().WriteToken(token);
-    //     }
-}
-public class LoginRequestModel
-{
-    public string Email { get; set; }
-    public string Password { get; set; }
 }

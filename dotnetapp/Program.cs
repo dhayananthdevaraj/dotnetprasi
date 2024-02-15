@@ -18,6 +18,14 @@ builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<EventService>();
 builder.Services.AddScoped<PlayerService>();
 builder.Services.AddScoped<RefereeService>();
+builder.Services.AddScoped<ScheduleService>();
+builder.Services.AddScoped<TeamService>();
+builder.Services.AddScoped<VenueService>();
+builder.Services.AddScoped<UserService>();
+
+
+
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>

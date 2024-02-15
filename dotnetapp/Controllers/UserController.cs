@@ -42,7 +42,7 @@ public class UserController : ControllerBase
                 return Ok(new { message = "Invalid Credentials" });
             }
 
-            var token = GenerateToken(user.UserId);
+            var token = AuthService.GenerateToken(user.UserId);
 
             var responseObj = new
             {

@@ -14,7 +14,7 @@ public class Team
     public int EstablishedYear { get; set; }
 
     // Navigation property representing the players in the team
-    public List<Player> Players { get; set; }
+    // public List<Player> Players { get; set; }
 }
 
 }

@@ -1,10 +1,10 @@
+// PlayerController.cs
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using dotnetapp.Models;
+using dotnetapp.Services;
 
 namespace dotnetapp.Controllers
 {
@@ -12,26 +12,24 @@ namespace dotnetapp.Controllers
     [ApiController]
     public class PlayerController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly PlayerService _playerService;
 
-        public PlayerController(ApplicationDbContext context)
+        public PlayerController(PlayerService playerService)
         {
-            _context = context;
+            _playerService = playerService;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Player>>> GetAllPlayers()
         {
-            var players = await _context.Players.ToListAsync();
-
+            var players = await _playerService.GetAllPlayers();
             return Ok(players);
         }
 
         [HttpGet("{playerId}")]
         public async Task<ActionResult<Player>> GetPlayerById(int playerId)
         {
-            var player = await _context.Players
-                .FirstOrDefaultAsync(p => p.PlayerId == playerId);
+            var player = await _playerService.GetPlayerById(playerId);
 
             if (player == null)
             {
@@ -46,10 +44,16 @@ namespace dotnetapp.Controllers
         {
             try
             {
-                _context.Players.Add(player);
-                await _context.SaveChangesAsync();
+                var success = await _playerService.AddPlayer(player);
 
-                return Ok(new { message = "Player added successfully" });
+                if (success)
+                {
+                    return Ok(new { message = "Player added successfully" });
+                }
+                else
+                {
+                    return StatusCode(500, new { message = "Failed to add player" });
+                }
             }
             catch (Exception ex)
             {
@@ -62,19 +66,16 @@ namespace dotnetapp.Controllers
         {
             try
             {
-                var existingPlayer = await _context.Players.FirstOrDefaultAsync(p => p.PlayerId == playerId);
+                var success = await _playerService.UpdatePlayer(playerId, player);
 
-                if (existingPlayer == null)
+                if (success)
+                {
+                    return Ok(new { message = "Player updated successfully" });
+                }
+                else
                 {
                     return NotFound(new { message = "Cannot find any player" });
                 }
-
-                player.PlayerId = playerId;
-
-                _context.Entry(existingPlayer).CurrentValues.SetValues(player);
-                await _context.SaveChangesAsync();
-
-                return Ok(new { message = "Player updated successfully" });
             }
             catch (Exception ex)
             {
@@ -87,17 +88,16 @@ namespace dotnetapp.Controllers
         {
             try
             {
-                var player = await _context.Players.FirstOrDefaultAsync(p => p.PlayerId == playerId);
+                var success = await _playerService.DeletePlayer(playerId);
 
-                if (player == null)
+                if (success)
+                {
+                    return Ok(new { message = "Player deleted successfully" });
+                }
+                else
                 {
                     return NotFound(new { message = "Cannot find any player" });
                 }
-
-                _context.Players.Remove(player);
-                await _context.SaveChangesAsync();
-
-                return Ok(new { message = "Player deleted successfully" });
             }
             catch (Exception ex)
             {

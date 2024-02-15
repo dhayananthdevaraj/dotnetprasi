@@ -1,10 +1,10 @@
+// ScheduleController.cs
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using dotnetapp.Models;
+using dotnetapp.Services;
 
 namespace dotnetapp.Controllers
 {
@@ -12,26 +12,24 @@ namespace dotnetapp.Controllers
     [ApiController]
     public class ScheduleController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ScheduleService _scheduleService;
 
-        public ScheduleController(ApplicationDbContext context)
+        public ScheduleController(ScheduleService scheduleService)
         {
-            _context = context;
+            _scheduleService = scheduleService;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Schedule>>> GetAllSchedules()
         {
-            var schedules = await _context.Schedules.ToListAsync();
-
+            var schedules = await _scheduleService.GetAllSchedules();
             return Ok(schedules);
         }
 
         [HttpGet("{scheduleId}")]
         public async Task<ActionResult<Schedule>> GetScheduleById(int scheduleId)
         {
-            var schedule = await _context.Schedules
-                .FirstOrDefaultAsync(s => s.ScheduleId == scheduleId);
+            var schedule = await _scheduleService.GetScheduleById(scheduleId);
 
             if (schedule == null)
             {
@@ -46,10 +44,16 @@ namespace dotnetapp.Controllers
         {
             try
             {
-                _context.Schedules.Add(schedule);
-                await _context.SaveChangesAsync();
+                var success = await _scheduleService.AddSchedule(schedule);
 
-                return Ok(new { message = "Schedule added successfully" });
+                if (success)
+                {
+                    return Ok(new { message = "Schedule added successfully" });
+                }
+                else
+                {
+                    return StatusCode(500, new { message = "Failed to add schedule" });
+                }
             }
             catch (Exception ex)
             {
@@ -62,19 +66,16 @@ namespace dotnetapp.Controllers
         {
             try
             {
-                var existingSchedule = await _context.Schedules.FirstOrDefaultAsync(s => s.ScheduleId == scheduleId);
+                var success = await _scheduleService.UpdateSchedule(scheduleId, schedule);
 
-                if (existingSchedule == null)
+                if (success)
+                {
+                    return Ok(new { message = "Schedule updated successfully" });
+                }
+                else
                 {
                     return NotFound(new { message = "Cannot find any schedule" });
                 }
-
-                schedule.ScheduleId = scheduleId;
-
-                _context.Entry(existingSchedule).CurrentValues.SetValues(schedule);
-                await _context.SaveChangesAsync();
-
-                return Ok(new { message = "Schedule updated successfully" });
             }
             catch (Exception ex)
             {
@@ -87,17 +88,16 @@ namespace dotnetapp.Controllers
         {
             try
             {
-                var schedule = await _context.Schedules.FirstOrDefaultAsync(s => s.ScheduleId == scheduleId);
+                var success = await _scheduleService.DeleteSchedule(scheduleId);
 
-                if (schedule == null)
+                if (success)
+                {
+                    return Ok(new { message = "Schedule deleted successfully" });
+                }
+                else
                 {
                     return NotFound(new { message = "Cannot find any schedule" });
                 }
-
-                _context.Schedules.Remove(schedule);
-                await _context.SaveChangesAsync();
-
-                return Ok(new { message = "Schedule deleted successfully" });
             }
             catch (Exception ex)
             {

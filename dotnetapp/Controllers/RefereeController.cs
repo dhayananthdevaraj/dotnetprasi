@@ -1,10 +1,10 @@
+// RefereeController.cs
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using dotnetapp.Models;
+using dotnetapp.Services;
 
 namespace dotnetapp.Controllers
 {
@@ -12,26 +12,24 @@ namespace dotnetapp.Controllers
     [ApiController]
     public class RefereeController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly RefereeService _refereeService;
 
-        public RefereeController(ApplicationDbContext context)
+        public RefereeController(RefereeService refereeService)
         {
-            _context = context;
+            _refereeService = refereeService;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Referee>>> GetAllReferees()
         {
-            var referees = await _context.Referees.ToListAsync();
-
+            var referees = await _refereeService.GetAllReferees();
             return Ok(referees);
         }
 
         [HttpGet("{refereeId}")]
         public async Task<ActionResult<Referee>> GetRefereeById(int refereeId)
         {
-            var referee = await _context.Referees
-                .FirstOrDefaultAsync(r => r.RefereeID == refereeId);
+            var referee = await _refereeService.GetRefereeById(refereeId);
 
             if (referee == null)
             {
@@ -46,10 +44,16 @@ namespace dotnetapp.Controllers
         {
             try
             {
-                _context.Referees.Add(referee);
-                await _context.SaveChangesAsync();
+                var success = await _refereeService.AddReferee(referee);
 
-                return Ok(new { message = "Referee added successfully" });
+                if (success)
+                {
+                    return Ok(new { message = "Referee added successfully" });
+                }
+                else
+                {
+                    return StatusCode(500, new { message = "Failed to add referee" });
+                }
             }
             catch (Exception ex)
             {
@@ -62,19 +66,16 @@ namespace dotnetapp.Controllers
         {
             try
             {
-                var existingReferee = await _context.Referees.FirstOrDefaultAsync(r => r.RefereeID == refereeId);
+                var success = await _refereeService.UpdateReferee(refereeId, referee);
 
-                if (existingReferee == null)
+                if (success)
+                {
+                    return Ok(new { message = "Referee updated successfully" });
+                }
+                else
                 {
                     return NotFound(new { message = "Cannot find any referee" });
                 }
-
-                referee.RefereeID = refereeId;
-
-                _context.Entry(existingReferee).CurrentValues.SetValues(referee);
-                await _context.SaveChangesAsync();
-
-                return Ok(new { message = "Referee updated successfully" });
             }
             catch (Exception ex)
             {
@@ -87,17 +88,16 @@ namespace dotnetapp.Controllers
         {
             try
             {
-                var referee = await _context.Referees.FirstOrDefaultAsync(r => r.RefereeID == refereeId);
+                var success = await _refereeService.DeleteReferee(refereeId);
 
-                if (referee == null)
+                if (success)
+                {
+                    return Ok(new { message = "Referee deleted successfully" });
+                }
+                else
                 {
                     return NotFound(new { message = "Cannot find any referee" });
                 }
-
-                _context.Referees.Remove(referee);
-                await _context.SaveChangesAsync();
-
-                return Ok(new { message = "Referee deleted successfully" });
             }
             catch (Exception ex)
             {

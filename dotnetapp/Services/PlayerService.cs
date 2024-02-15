@@ -1,4 +1,4 @@
-// EventService.cs
+// PlayerService.cs
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,30 +7,30 @@ using dotnetapp.Models;
 
 namespace dotnetapp.Services
 {
-    public class EventService
+    public class PlayerService
     {
         private readonly ApplicationDbContext _context;
 
-        public EventService(ApplicationDbContext context)
+        public PlayerService(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public async Task<IEnumerable<Event>> GetAllEvents()
+        public async Task<IEnumerable<Player>> GetAllPlayers()
         {
-            return await _context.Events.ToListAsync();
+            return await _context.Players.ToListAsync();
         }
 
-        public async Task<Event> GetEventById(int eventId)
+        public async Task<Player> GetPlayerById(int playerId)
         {
-            return await _context.Events.FirstOrDefaultAsync(e => e.EventId == eventId);
+            return await _context.Players.FirstOrDefaultAsync(p => p.PlayerId == playerId);
         }
 
-        public async Task<bool> AddEvent(Event @event)
+        public async Task<bool> AddPlayer(Player player)
         {
             try
             {
-                _context.Events.Add(@event);
+                _context.Players.Add(player);
                 await _context.SaveChangesAsync();
                 return true;
             }
@@ -40,20 +40,20 @@ namespace dotnetapp.Services
             }
         }
 
-        public async Task<bool> UpdateEvent(int eventId, Event @event)
+        public async Task<bool> UpdatePlayer(int playerId, Player player)
         {
             try
             {
-                var existingEvent = await _context.Events.FirstOrDefaultAsync(e => e.EventId == eventId);
+                var existingPlayer = await _context.Players.FirstOrDefaultAsync(p => p.PlayerId == playerId);
 
-                if (existingEvent == null)
+                if (existingPlayer == null)
                 {
                     return false;
                 }
 
-                @event.EventId = eventId;
+                player.PlayerId = playerId;
 
-                _context.Entry(existingEvent).CurrentValues.SetValues(@event);
+                _context.Entry(existingPlayer).CurrentValues.SetValues(player);
                 await _context.SaveChangesAsync();
 
                 return true;
@@ -64,18 +64,18 @@ namespace dotnetapp.Services
             }
         }
 
-        public async Task<bool> DeleteEvent(int eventId)
+        public async Task<bool> DeletePlayer(int playerId)
         {
             try
             {
-                var existingEvent = await _context.Events.FirstOrDefaultAsync(e => e.EventId == eventId);
+                var existingPlayer = await _context.Players.FirstOrDefaultAsync(p => p.PlayerId == playerId);
 
-                if (existingEvent == null)
+                if (existingPlayer == null)
                 {
                     return false;
                 }
 
-                _context.Events.Remove(existingEvent);
+                _context.Players.Remove(existingPlayer);
                 await _context.SaveChangesAsync();
 
                 return true;

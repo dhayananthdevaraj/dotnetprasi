@@ -1,4 +1,4 @@
-// EventService.cs
+// RefereeService.cs
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,30 +7,30 @@ using dotnetapp.Models;
 
 namespace dotnetapp.Services
 {
-    public class EventService
+    public class RefereeService
     {
         private readonly ApplicationDbContext _context;
 
-        public EventService(ApplicationDbContext context)
+        public RefereeService(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public async Task<IEnumerable<Event>> GetAllEvents()
+        public async Task<IEnumerable<Referee>> GetAllReferees()
         {
-            return await _context.Events.ToListAsync();
+            return await _context.Referees.ToListAsync();
         }
 
-        public async Task<Event> GetEventById(int eventId)
+        public async Task<Referee> GetRefereeById(int refereeId)
         {
-            return await _context.Events.FirstOrDefaultAsync(e => e.EventId == eventId);
+            return await _context.Referees.FirstOrDefaultAsync(r => r.RefereeID == refereeId);
         }
 
-        public async Task<bool> AddEvent(Event @event)
+        public async Task<bool> AddReferee(Referee referee)
         {
             try
             {
-                _context.Events.Add(@event);
+                _context.Referees.Add(referee);
                 await _context.SaveChangesAsync();
                 return true;
             }
@@ -40,20 +40,20 @@ namespace dotnetapp.Services
             }
         }
 
-        public async Task<bool> UpdateEvent(int eventId, Event @event)
+        public async Task<bool> UpdateReferee(int refereeId, Referee referee)
         {
             try
             {
-                var existingEvent = await _context.Events.FirstOrDefaultAsync(e => e.EventId == eventId);
+                var existingReferee = await _context.Referees.FirstOrDefaultAsync(r => r.RefereeID == refereeId);
 
-                if (existingEvent == null)
+                if (existingReferee == null)
                 {
                     return false;
                 }
 
-                @event.EventId = eventId;
+                referee.RefereeID = refereeId;
 
-                _context.Entry(existingEvent).CurrentValues.SetValues(@event);
+                _context.Entry(existingReferee).CurrentValues.SetValues(referee);
                 await _context.SaveChangesAsync();
 
                 return true;
@@ -64,18 +64,18 @@ namespace dotnetapp.Services
             }
         }
 
-        public async Task<bool> DeleteEvent(int eventId)
+        public async Task<bool> DeleteReferee(int refereeId)
         {
             try
             {
-                var existingEvent = await _context.Events.FirstOrDefaultAsync(e => e.EventId == eventId);
+                var existingReferee = await _context.Referees.FirstOrDefaultAsync(r => r.RefereeID == refereeId);
 
-                if (existingEvent == null)
+                if (existingReferee == null)
                 {
                     return false;
                 }
 
-                _context.Events.Remove(existingEvent);
+                _context.Referees.Remove(existingReferee);
                 await _context.SaveChangesAsync();
 
                 return true;

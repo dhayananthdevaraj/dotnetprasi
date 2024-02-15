@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using dotnetapp.Models;
 
@@ -11,9 +12,10 @@ using dotnetapp.Models;
 namespace dotnetapp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240215073234_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -176,6 +178,10 @@ namespace dotnetapp.Migrations
 
                     b.HasIndex("RefereeId");
 
+                    b.HasIndex("Team1Id");
+
+                    b.HasIndex("Team2Id");
+
                     b.HasIndex("VenueId");
 
                     b.ToTable("Schedules");
@@ -314,6 +320,18 @@ namespace dotnetapp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("dotnetapp.Models.Team", "Team1")
+                        .WithMany()
+                        .HasForeignKey("Team1Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("dotnetapp.Models.Team", "Team2")
+                        .WithMany()
+                        .HasForeignKey("Team2Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("dotnetapp.Models.Venue", "Venue")
                         .WithMany()
                         .HasForeignKey("VenueId")
@@ -323,6 +341,10 @@ namespace dotnetapp.Migrations
                     b.Navigation("Event");
 
                     b.Navigation("MainReferee");
+
+                    b.Navigation("Team1");
+
+                    b.Navigation("Team2");
 
                     b.Navigation("Venue");
                 });

@@ -12,8 +12,8 @@ using dotnetapp.Models;
 namespace dotnetapp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240215073234_Initial")]
-    partial class Initial
+    [Migration("20240215074440_First")]
+    partial class First
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -178,10 +178,6 @@ namespace dotnetapp.Migrations
 
                     b.HasIndex("RefereeId");
 
-                    b.HasIndex("Team1Id");
-
-                    b.HasIndex("Team2Id");
-
                     b.HasIndex("VenueId");
 
                     b.ToTable("Schedules");
@@ -320,18 +316,6 @@ namespace dotnetapp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("dotnetapp.Models.Team", "Team1")
-                        .WithMany()
-                        .HasForeignKey("Team1Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("dotnetapp.Models.Team", "Team2")
-                        .WithMany()
-                        .HasForeignKey("Team2Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("dotnetapp.Models.Venue", "Venue")
                         .WithMany()
                         .HasForeignKey("VenueId")
@@ -341,10 +325,6 @@ namespace dotnetapp.Migrations
                     b.Navigation("Event");
 
                     b.Navigation("MainReferee");
-
-                    b.Navigation("Team1");
-
-                    b.Navigation("Team2");
 
                     b.Navigation("Venue");
                 });

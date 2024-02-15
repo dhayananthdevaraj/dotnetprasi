@@ -18,7 +18,6 @@ public class Venue
     public string VenueLocation { get; set; }
 
     // Navigation property representing the events held at the venue
-    public List<Event> Events { get; set; }
 }
 
 }

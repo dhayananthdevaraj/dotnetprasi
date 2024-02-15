@@ -47,7 +47,7 @@ public class AuthController : ControllerBase
 
             var responseObj = new
             {
-                username = $"{user.FirstName} {user.LastName}",
+                username = $"{user.Username}",
                 role = user.Role,
                 token = token,
                 userId = user.UserId

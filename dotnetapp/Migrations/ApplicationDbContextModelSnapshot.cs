@@ -166,14 +166,11 @@ namespace dotnetapp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TeamId"), 1L, 1);
 
-                    b.Property<int>("EstablishedYear")
-                        .HasColumnType("int");
-
                     b.Property<string>("TeamName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TeamOwner")
+                    b.Property<string>("teamDescription")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

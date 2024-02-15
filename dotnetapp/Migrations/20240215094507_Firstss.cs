@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace dotnetapp.Migrations
 {
-    public partial class Firsts : Migration
+    public partial class Firstss : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -89,8 +89,7 @@ namespace dotnetapp.Migrations
                     TeamId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TeamName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TeamOwner = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EstablishedYear = table.Column<int>(type: "int", nullable: false)
+                    teamDescription = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

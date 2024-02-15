@@ -8,10 +8,9 @@ public class Team
     public string TeamName { get; set; }
 
     // [Required(ErrorMessage = "Team owner is required")]
-    public string TeamOwner { get; set; }
 
     // [Required(ErrorMessage = "Established year is required")]
-    public int EstablishedYear { get; set; }
+    public string teamDescription { get; set; }
 
     // Navigation property representing the players in the team
     // public List<Player> Players { get; set; }

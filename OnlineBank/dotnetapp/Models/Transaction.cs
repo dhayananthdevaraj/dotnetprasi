@@ -12,9 +12,22 @@ namespace dotnetapp.Models
         public decimal Amount { get; set; }
         public DateTime Timestamp { get; set; }
         // Additional properties as needed
-
-        // Navigation properties
         public User User { get; set; }
         public Account Account { get; set; }
     }
 }
+
+
+// dotnet new tool-manifest
+ 
+ 
+// dotnet tool install --local dotnet-ef --version 6.0.6
+ 
+ 
+// dotnet dotnet-ef --To check the EF installed or not
+ 
+ 
+// dotnet dotnet-ef migrations add "InitialSetup" --command to setup the initial creation of tables mentioned in DBContext
+ 
+ 
+// dotnet dotnet-ef database update --command to update the database

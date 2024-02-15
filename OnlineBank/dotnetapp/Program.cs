@@ -15,12 +15,11 @@ builder.Services.AddSwaggerGen();
 // Register AuthService
 // Register AuthService as a scoped service
 builder.Services.AddScoped<AuthService>();
-builder.Services.AddScoped<EventService>();
-builder.Services.AddScoped<PlayerService>();
-builder.Services.AddScoped<RefereeService>();
-builder.Services.AddScoped<ScheduleService>();
-builder.Services.AddScoped<TeamService>();
-builder.Services.AddScoped<VenueService>();
+builder.Services.AddScoped<AccountService>();
+builder.Services.AddScoped<FDRequestService>();
+builder.Services.AddScoped<FixedDepositService>();
+builder.Services.AddScoped<ReviewService>();
+builder.Services.AddScoped<TransactionService>();
 builder.Services.AddScoped<UserService>();
 
 

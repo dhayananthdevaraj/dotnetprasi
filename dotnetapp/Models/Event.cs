@@ -24,6 +24,5 @@ namespace dotnetapp.Models
         public string Description { get; set; }
 
         // Navigation property representing the teams participating in the event
-        public List<Team> Teams { get; set; }
     }
 }

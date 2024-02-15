@@ -121,8 +121,3 @@ public class AuthController : ControllerBase
     //         return new JwtSecurityTokenHandler().WriteToken(token);
     //     }
 }
-public class LoginRequestModel
-{
-    public string Email { get; set; }
-    public string Password { get; set; }
-}

@@ -1,7 +1,5 @@
 ﻿namespace dotnetapp.Models
 {
-  
-
 public class Team
 {
     public int TeamId { get; set; }
@@ -12,7 +10,7 @@ public class Team
     [Required(ErrorMessage = "Team owner is required")]
     public string TeamOwner { get; set; }
 
-    [Range(1800, 2100, ErrorMessage = "Established year must be between 1800 and 2100")]
+    [Required(ErrorMessage = "Established year is required")]
     public int EstablishedYear { get; set; }
 
     // Navigation property representing the players in the team

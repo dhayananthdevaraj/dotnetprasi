@@ -15,6 +15,7 @@ builder.Services.AddSwaggerGen();
 // Register AuthService
 // Register AuthService as a scoped service
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<EventService>();
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>

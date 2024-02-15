@@ -1,3 +1,7 @@
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace dotnetapp.Models
 {
     public class Schedule
@@ -19,20 +23,19 @@ namespace dotnetapp.Models
         public int VenueId { get; set; }
         public Venue? Venue { get; set; }
 
-        // Foreign key referencing the Venue table
-
         // [Required(ErrorMessage = "Referee is required")]
         public int RefereeId { get; set; }
 
         public Referee? Referee { get; set; }
 
+        [ForeignKey("Team1Id")]
+        public Team? Team1 { get; set; }
+
+        [ForeignKey("Team2Id")]
+        public Team? Team2 { get; set; }
+
         public int Team1Id { get; set; }
 
         public int Team2Id { get; set; }
-        public Team? Team1 { get; set; }
-
-        public Team? Team2 { get; set; }
-
-
     }
 }

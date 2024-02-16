@@ -4,7 +4,7 @@
 
 namespace dotnetapp.Migrations
 {
-    public partial class Firstsssssssssss : Migration
+    public partial class initirdfgalsswx : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

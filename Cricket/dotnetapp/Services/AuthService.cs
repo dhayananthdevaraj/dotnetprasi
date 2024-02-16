@@ -21,7 +21,8 @@ namespace dotnetapp.Services
         }
         public async Task<(int, string)> Registeration(RegistrationModel model, string role)
         {
-            var userExists = await userManager.FindByNameAsync(model.Username);
+            Console.WriteLine("role"+role);
+            var userExists = await userManager.FindByEmailAsync(model.Email);
             if (userExists != null)
                 return (0, "User already exists");
 
@@ -29,15 +30,18 @@ namespace dotnetapp.Services
             {
                 Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = model.Username,
-                Name = model.Name
+                UserName = model.Username
+                //Name = model.Name
             };
             var createUserResult = await userManager.CreateAsync(user, model.Password);
             if (!createUserResult.Succeeded)
                 return (0, "User creation failed! Please check user details and try again.");
 
             if (!await roleManager.RoleExistsAsync(role))
-                await roleManager.CreateAsync(new IdentityRole(role));
+               await roleManager.CreateAsync(new IdentityRole(role));
+            // if (!await roleManager.RoleExistsAsync(UserRoles.User))
+            //     await roleManager.CreateAsync(new IdentityRole(UserRoles.User));
+
 
             if (await roleManager.RoleExistsAsync(UserRoles.User))
                 await userManager.AddToRoleAsync(user, role);
@@ -47,13 +51,17 @@ namespace dotnetapp.Services
 
         public async Task<(int, string)> Login(LoginModel model)
         {
-            var user = await userManager.FindByNameAsync(model.Username);
+            var user = await userManager.FindByEmailAsync(model.Email);
+            Console.WriteLine(string.Join(", ", user));
+
             if (user == null)
                 return (0, "Invalid username");
             if (!await userManager.CheckPasswordAsync(user, model.Password))
                 return (0, "Invalid password");
 
             var userRoles = await userManager.GetRolesAsync(user);
+            Console.WriteLine(string.Join(", ", userRoles));
+
             var authClaims = new List<Claim>
             {
                new Claim(ClaimTypes.Name, user.UserName),
@@ -71,6 +79,7 @@ namespace dotnetapp.Services
 
         private string GenerateToken(IEnumerable<Claim> claims)
         {
+            Console.WriteLine(claims);
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
 
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -82,8 +91,12 @@ namespace dotnetapp.Services
                 Subject = new ClaimsIdentity(claims)
             };
 
+            Console.WriteLine(tokenDescriptor);
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
+
+
+
             return tokenHandler.WriteToken(token);
         }
     }

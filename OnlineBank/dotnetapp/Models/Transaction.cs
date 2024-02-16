@@ -10,20 +10,14 @@ namespace dotnetapp.Models
         [Key]
         public long TransactionId { get; set; }
 
-        [ForeignKey("UserId")]
-        public User? User { get; set; }
-
-        public int UserId { get; set; }
-
         [ForeignKey("AccountId")]
         public Account? Account { get; set; }
 
         public long AccountId { get; set; }
 
-        public string Type { get; set; } // Credit or Debit
+        public string Type { get; set;} // Credit or Debit////``
         public decimal Amount { get; set; }
         public DateTime Timestamp { get; set; }
 
-        // Navigation properties
     }
 }

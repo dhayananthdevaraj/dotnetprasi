@@ -13,21 +13,7 @@ namespace dotnetapp.Models
         public DbSet<FixedDeposit> FixedDeposits { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
- protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Transaction>()
-                  .HasOne(s => s.User)
-                  .WithMany()
-                  .HasForeignKey(s => s.Team1Id)
-                  .OnDelete(DeleteBehavior.Restrict); // Use Restrict for one and NoAction for others
 
-            modelBuilder.Entity<Schedule>()
-                .HasOne(s => s.Team2)
-                .WithMany()
-                .HasForeignKey(s => s.Team2Id);    // Configure other relationships
-         
-            base.OnModelCreating(modelBuilder);
-        }
     }
 }
 

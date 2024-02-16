@@ -19,12 +19,12 @@ namespace dotnetapp.Services
 
         public async Task<IEnumerable<Transaction>> GetAllTransactions()
         {
-            return await _context.Transactions.Include(t => t.User).ToListAsync();
+            return await _context.Transactions.ToListAsync();
         }
 
         public async Task<Transaction> GetTransactionById(long transactionId)
         {
-            return await _context.Transactions.Include(t => t.User)
+            return await _context.Transactions
                 .FirstOrDefaultAsync(t => t.TransactionId == transactionId);
         }
 
